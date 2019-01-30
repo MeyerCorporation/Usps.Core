@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/MeyerCorporation/MeyerCorp.Usps.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>USPS API Address Lookup Delivery Information</PackageTags>
-    <PackageReleaseNotes>(Preview) Initial creation.</PackageReleaseNotes>
+    <PackageReleaseNotes>(Preview) Verify API is working.</PackageReleaseNotes>
     <Version>0.1.0</Version>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
