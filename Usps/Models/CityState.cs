@@ -18,6 +18,7 @@ namespace MeyerCorp.Usps.Api.Models
 				Error = parsed.Element("Error")?.Value,
 				Zip5 = parsed.Element("Zip5")?.Value,
 				State = parsed.Element("State")?.Value,
+				Id = parsed.Attribute("ID")?.Value,
 			};
 		}
 	}

@@ -2,7 +2,7 @@
 
 namespace MeyerCorp.Usps.Api.Models
 {
-	public class Address:Model
+	public class Address : Model
 	{
 		public static Address Parse(string input)
 		{
@@ -27,7 +27,7 @@ namespace MeyerCorp.Usps.Api.Models
 				Error = parsed.Element("Error")?.Value,
 				FirmName = parsed.Element("FirmName")?.Value,
 				Footnotes = ToBool(parsed.Element("Footnotes")?.Value),
-				//Id = parsed.Element("Address1")?.Value,
+				Id = parsed.Attribute("ID")?.Value,
 				State = parsed.Element("State")?.Value,
 				Urbanization = parsed.Element("Urbanization")?.Value,
 				Vacant = ToBool(parsed.Element("Vacant")?.Value),
@@ -36,7 +36,6 @@ namespace MeyerCorp.Usps.Api.Models
 			};
 		}
 
-		public string Id { get; set; }
 		public string FirmName { get; set; }
 		public string Address1 { get; set; }
 		public string Address2 { get; set; }

@@ -4,6 +4,8 @@ namespace MeyerCorp.Usps.Api.Models
 {
 	public abstract class Model
 	{
+		public string Id { get; set; }
+
 		public string Error { get; set; }
 
 		protected static bool? ToBool(string value)
