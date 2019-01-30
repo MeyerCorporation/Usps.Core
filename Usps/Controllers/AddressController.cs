@@ -17,12 +17,12 @@ namespace MeyerCorp.Usps.Api.Controllers
 	[Produces("application/json")]
 	[Route("api/usps")]
 	[EnableCors("UspsCors")]
-	public class VerifyController : Controller
+	public class AddressController : Controller
 	{
 		readonly UspsOptions _Options;
-		readonly ILogger<VerifyController> _Logger;
+		readonly ILogger<AddressController> _Logger;
 
-		public VerifyController(IOptions<UspsOptions> options, ILogger<VerifyController> logger)
+		public AddressController(IOptions<UspsOptions> options, ILogger<AddressController> logger)
 		{
 			_Logger = logger;
 			_Options = options.Value;
@@ -90,6 +90,14 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 		}
 
+		[HttpPost("verify", Name = "VerifyAddresses")]
+		[SwaggerResponse(statusCode: 200, type: typeof(Address[]))]
+		[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		public IActionResult VerifyAddresses([FromBody]Xml.Address[] addresses)
+		{
+			throw new NotImplementedException();
+		}
+
 		[HttpGet("citystatelookup", Name = "LookupCityState")]
 		[SwaggerResponse(statusCode: 200, type: typeof(CityState))]
 		[SwaggerResponse(statusCode: 400, type: typeof(string))]
@@ -138,7 +146,13 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 		}
 
-		#region Lookup Zip Code
+		[HttpPost("citystatelookup", Name = "LookupCityStates")]
+		[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
+		[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		public IActionResult LookupCityState([FromBody]Xml.CityState[] cityStates)
+		{
+			throw new NotImplementedException();
+		}
 
 		[HttpGet("zipcodelookup", Name = "LookupZipCode")]
 		[SwaggerResponse(statusCode: 200, type: typeof(ZipCode))]
@@ -198,57 +212,12 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 		}
 
-		ZipCode ParseZipCodeLookup(string input)
+		[HttpPost("zipcodelookup", Name = "LookupZipCodes")]
+		[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
+		[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		public IActionResult LookupZipCodes([FromBody]Xml.ZipCode[] zipCodes)
 		{
-			var parsed = XElement.Parse(input).Element("Address");
-
-			var addressp1 = parsed.Element("Address1")?.Value;
-			var addressp2 = parsed.Element("Address2")?.Value;
-
-			return new ZipCode
-			{
-				FirmName = parsed.Element("FirmName")?.Value,
-				Address1 = addressp2,
-				Address2 = addressp1,
-				City = parsed.Element("City")?.Value,
-				State = parsed.Element("State")?.Value,
-				Zip5 = parsed.Element("Zip5")?.Value,
-				Zip4 = parsed.Element("Zip4")?.Value,
-				Error = parsed.Element("Error")?.Value,
-			};
-		}
-
-		Uri GetZipCodeUrl(params string[] zip5)
-		{
-			if (zip5.Length > 5) throw new ArgumentException("Only five zip codes can be checked by one request.");
-
-			var center = new StringBuilder();
-
-			foreach (var zip in zip5)
-			{
-				center.AppendXml("ZipCode", $"<Zip5>{zip}</Zip5>", "ID", zip);
-			}
-
-			var request = new StringBuilder();
-
-			return new Uri(request
-				.Append($"{_Options.BaseUrl}/{_Options.Path}?API=CityStateLookup&XML=")
-				.AppendXml("ZipCodeLookupRequest", center.ToString(), "USERID", _Options.UserId)
-				.ToString());
-		}
-
-		#endregion
-
-		static bool? ToBool(string value)
-		{
-			if (String.IsNullOrWhiteSpace(value))
-				return null;
-			else if (value == "Y")
-				return true;
-			else if (value == "N")
-				return false;
-			else
-				throw new ArgumentException();
+			throw new NotImplementedException();
 		}
 
 		string GetError(string responseString)

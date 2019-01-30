@@ -14,7 +14,7 @@ namespace Test
 		{
 			var options = new Options();
 
-			var controller = new VerifyController(options, null);
+			var controller = new AddressController(options, null);
 
 			var result = await controller.VerifyAddressAsync(firmname: String.Empty,
 				address1: "3343 sueno dr",
@@ -30,7 +30,7 @@ namespace Test
 		{
 			var options = new Options();
 
-			var controller = new VerifyController(options, null);
+			var controller = new AddressController(options, null);
 
 			var result = await controller.LookupZipCodeAsync(firmname: String.Empty,
 				address1: "3343 sueno dr",
@@ -44,7 +44,7 @@ namespace Test
 		{
 			var options = new Options();
 
-			var controller = new VerifyController(options, null);
+			var controller = new AddressController(options, null);
 
 			var result = await controller.LookupCityStateAsync(zip5:"95148");
 		}
