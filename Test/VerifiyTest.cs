@@ -42,7 +42,33 @@ namespace Test
 				state: "ca");
 		}
 
-		[Fact]
+		[Fact(DisplayName = "Look Up City,State for null zip code.")]
+		public async Task LookupCityStateFailTestAsync()
+		{
+			var options = new Options();
+
+			var controller = new AddressController(options, null);
+
+			var result = await controller.LookupCityStateAsync(zip51: null);
+			var badrequestobjectresult = result as BadRequestObjectResult;
+
+			Assert.IsType<BadRequestObjectResult>(badrequestobjectresult);
+		}
+
+		[Fact(DisplayName = "Look Up City,State for unknown/invalid zip code.")]
+		public async Task LookupCityStateFail1TestAsync()
+		{
+			var options = new Options();
+
+			var controller = new AddressController(options, null);
+
+			var result = await controller.LookupCityStateAsync(zip51: "456789");
+			var badrequestobjectresult = result as BadRequestObjectResult;
+
+			Assert.IsType<BadRequestObjectResult>(badrequestobjectresult);
+		}
+
+		[Fact(DisplayName = "Look Up City,State for 1 zip code.")]
 		public async Task LookupCityStateTestAsync()
 		{
 			var options = new Options();
@@ -60,7 +86,7 @@ namespace Test
 			Assert.Single(value);
 		}
 
-		[Fact]
+		[Fact(DisplayName ="Look Up City,State for 5 zip codes.")]
 		public async Task LookupCityStatesTestAsync()
 		{
 			var options = new Options();
