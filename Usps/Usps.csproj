@@ -1,0 +1,33 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+	  <TargetFramework>netcoreapp2.2</TargetFramework>
+	  <AssemblyName>MeyerCorp.Usps</AssemblyName>
+    <RootNamespace>MeyerCorp.Usps.Api</RootNamespace>
+    <Authors>Daniel R. Przybylski</Authors>
+    <Company>Meyer Corporation</Company>
+    <Description>A more convenient wrapper of the United States Postal Service APIs.</Description>
+    <Copyright>2019 Meyer Corporation</Copyright>
+    <PackageLicenseUrl>https://meyerlicensing.azurewebsites.net/Mit.html</PackageLicenseUrl>
+    <PackageId>MeyerCorp.Usps</PackageId>
+    <PackageProjectUrl>https://github.com/MeyerCorporation/MeyerCorp.Usps</PackageProjectUrl>
+    <PackageIconUrl>https://meyerlicensing.azurewebsites.net/images/favicon.ico</PackageIconUrl>
+    <RepositoryUrl>https://github.com/MeyerCorporation/MeyerCorp.Usps.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>USPS API Address Lookup Delivery Information</PackageTags>
+    <PackageReleaseNotes>(Preview) Initial creation.</PackageReleaseNotes>
+    <Version>0.0.0</Version>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
+  </ItemGroup>
+
+</Project>
