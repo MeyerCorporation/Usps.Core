@@ -1,4 +1,6 @@
-﻿namespace MeyerCorp.Usps.Api.Xml
+﻿using System.Text;
+
+namespace MeyerCorp.Usps.Api.Xml
 {
 	public class ZipCode : XmlFormatter
 	{
@@ -49,5 +51,22 @@
 		/// </summary>
 		/// <remarks></remarks>
 		public string Error { get; set; }
+		public string Urbanization { get; internal set; }
+
+		public override string ToString()
+		{
+			var address = new StringBuilder();
+
+			address.AppendXml("FirmName", FirmName);
+			address.AppendXml("Address1", Address1);
+			address.AppendXml("Address2", Address2);
+			address.AppendXml("City", City);
+			address.AppendXml("State", State);
+			address.AppendXml("Urbanization", Urbanization);
+			address.AppendXml("Zip5", Zip5);
+			address.AppendXml("Zip4", Zip4);
+
+			return $"<Address ID =\"{Id}\">{address.ToString()}</Address>";
+		}
 	}
 }

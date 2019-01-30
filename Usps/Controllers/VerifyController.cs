@@ -90,76 +90,20 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 		}
 
-		#region Lookup City State
-
 		[HttpGet("citystatelookup", Name = "LookupCityState")]
 		[SwaggerResponse(statusCode: 200, type: typeof(CityState))]
-		public IActionResult LookupCityState([FromQuery]string zip5)
-		{
-			try
-			{
-				throw new NotImplementedException();
-			}
-			catch (Exception ex)
-			{
-				_Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
-				System.Diagnostics.Debug.WriteLine(ex.Message);
-				throw;
-			}
-		}
-
-		CityState ParseCityStateLookup(string input)
-		{
-			var parsed = XElement.Parse(input).Element("Address");
-
-			return new CityState
-			{
-				City = parsed.Element("City")?.Value,
-				State = parsed.Element("State")?.Value,
-				Zip5 = parsed.Element("Zip5")?.Value,
-				Error = parsed.Element("Error")?.Value,
-			};
-		}
-
-		Uri GetCityStateUrl(string zip5, int id = 0)
-		{
-			var center = new StringBuilder();
-
-			center
-				.AppendXml("FirmName", zip5);
-
-			var address = new StringBuilder();
-
-			address
-				.AppendXml("ZipCode", center.ToString(), "ID", "0");
-
-			var request = new StringBuilder();
-
-			return new Uri(request
-				.Append($"{_Options.BaseUrl}/{_Options.Path}?API=CityStateLookup&XML=")
-				.AppendXml("CityStateLookupRequ", address.ToString(), "USERID", _Options.UserId)
-				.ToString());
-		}
-
-		#endregion
-
-		#region Lookup Zip Code
-
-		[HttpGet("zipcodelookup", Name = "LookupZipCode")]
-		[SwaggerResponse(statusCode: 200, type: typeof(ZipCode))]
-		public async Task<IActionResult> LookupZipCodeAsync([FromQuery]string firmName,
-			[FromQuery]string firstZip5,
-			[FromQuery]string secondZip5 = null,
-			[FromQuery]string thirdZip5 = null,
-			[FromQuery]string fourthZip5 = null,
-			[FromQuery]string fifthZip5 = null)
+		[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		public async Task<IActionResult> LookupCityStateAsync([FromQuery]string zip5)
 		{
 			var client = new HttpClient();
 			var requestmessage = new HttpRequestMessage();
 
 			try
 			{
-				requestmessage.RequestUri = GetZipCodeUrl(firstZip5, secondZip5, thirdZip5, fourthZip5, fifthZip5);
+				requestmessage.RequestUri = GetUrl("CityStateLookup", "CityStateLookupRequest", new Xml.CityState
+				{
+					Zip5 = zip5,
+				});
 
 				var response = await client.SendAsync(requestmessage);
 
@@ -175,7 +119,67 @@ namespace MeyerCorp.Usps.Api.Controllers
 					}
 					else
 					{
-						return Ok(ParseZipCodeLookup(responseString));
+						return Ok(CityState.Parse(responseString));
+					}
+				}
+				else
+					return StatusCode((int)response.StatusCode);
+			}
+			catch (Exception ex)
+			{
+				if (_Logger != null) _Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
+				System.Diagnostics.Debug.WriteLine(ex.Message);
+				throw;
+			}
+			finally
+			{
+				requestmessage.Dispose();
+				client.Dispose();
+			}
+		}
+
+		#region Lookup Zip Code
+
+		[HttpGet("zipcodelookup", Name = "LookupZipCode")]
+		[SwaggerResponse(statusCode: 200, type: typeof(ZipCode))]
+		public async Task<IActionResult> LookupZipCodeAsync([FromQuery]string address1 = null,
+			[FromQuery]string address2 = null,
+			[FromQuery]string city = null,
+			[FromQuery]string firmname = null,
+			[FromQuery]string state = null,
+			[FromQuery]string urbanization = null)
+		{
+			var client = new HttpClient();
+			var requestmessage = new HttpRequestMessage();
+
+			try
+			{
+				requestmessage.RequestUri = GetUrl("ZipCodeLookup", "ZipCodeLookupRequest", new Xml.ZipCode
+				{
+					Address1 = address1,
+					Address2 = address2,
+					City = city,
+					FirmName = firmname,
+					Id = 0,
+					State = state,
+					Urbanization = urbanization,
+				});
+
+				var response = await client.SendAsync(requestmessage);
+
+				if (response.StatusCode == HttpStatusCode.OK)
+				{
+					var responseString = await response.Content.ReadAsStringAsync();
+
+					if (CheckError(responseString))
+					{
+						var message = GetError(responseString);
+						if (_Logger != null) _Logger.LogError("Bad Request", message);
+						return BadRequest(message);
+					}
+					else
+					{
+						return Ok(ZipCode.Parse(responseString));
 					}
 				}
 				else

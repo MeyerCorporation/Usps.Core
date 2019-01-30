@@ -1,6 +1,9 @@
-﻿namespace MeyerCorp.Usps.Api.Models
+﻿using System;
+using System.Xml.Linq;
+
+namespace MeyerCorp.Usps.Api.Models
 {
-	public class ZipCode
+	public class ZipCode : Model
 	{
 		/// <summary>
 		/// Up to 5 address verifications can be included per transaction
@@ -44,10 +47,24 @@
 		/// <remarks>Numeric values(0-9) only.If International, all zeroes.</remarks>
 		public string Zip4 { get; set; }
 
-		/// <summary>
-		/// Two-character state code of the destination address.String
-		/// </summary>
-		/// <remarks></remarks>
-		public string Error { get; set; }
+		internal static ZipCode Parse(string input)
+		{
+			var parsed = XElement.Parse(input).Element("Address");
+
+			var addressp1 = parsed.Element("Address1")?.Value;
+			var addressp2 = parsed.Element("Address2")?.Value;
+
+			return new ZipCode
+			{
+				Address1 = addressp1,
+				Address2 = addressp2,
+				City = parsed.Element("City")?.Value,
+				Error = parsed.Element("Error")?.Value,
+				FirmName = parsed.Element("FirmName")?.Value,
+				State = parsed.Element("State")?.Value,
+				Zip4 = parsed.Element("Zip4")?.Value,
+				Zip5 = parsed.Element("Zip5")?.Value,
+			};
+		}
 	}
 }

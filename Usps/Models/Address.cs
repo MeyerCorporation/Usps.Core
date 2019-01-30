@@ -78,6 +78,5 @@ namespace MeyerCorp.Usps.Api.Models
 		public bool? CentralDeliveryPoint { get; set; }
 		public bool? Vacant { get; set; }
 		public string Urbanization { get; internal set; }
-		public string Error { get; internal set; }
 	}
 }

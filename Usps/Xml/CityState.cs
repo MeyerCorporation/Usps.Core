@@ -1,11 +1,18 @@
-﻿namespace MeyerCorp.Usps.Api.Xml
+﻿using System.Text;
+
+namespace MeyerCorp.Usps.Api.Xml
 {
-	public class CityStateResponse : XmlFormatter
+	public class CityState : XmlFormatter
 	{
-		public string Id { get; set; }
 		public string Zip5 { get; set; }
-		public string City { get; set; }
-		public string State { get; set; }
-		public string Error { get; set; }
+
+		public override string ToString()
+		{
+			var address = new StringBuilder();
+
+			address.AppendXml("Zip5", Zip5);
+
+			return $"<ZipCode ID=\"{Id}\">{address.ToString()}</ZipCode>";
+		}
 	}
 }
