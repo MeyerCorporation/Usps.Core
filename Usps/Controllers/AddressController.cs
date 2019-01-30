@@ -99,19 +99,27 @@ namespace MeyerCorp.Usps.Api.Controllers
 		}
 
 		[HttpGet("citystatelookup", Name = "LookupCityState")]
-		[SwaggerResponse(statusCode: 200, type: typeof(CityState))]
+		[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
 		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public async Task<IActionResult> LookupCityStateAsync([FromQuery]string zip5)
+		public async Task<IActionResult> LookupCityStateAsync([FromQuery]string zip51,
+			[FromQuery]string zip52 = null,
+			[FromQuery]string zip53 = null,
+			[FromQuery]string zip54 = null,
+			[FromQuery]string zip55 = null)
 		{
 			var client = new HttpClient();
 			var requestmessage = new HttpRequestMessage();
 
 			try
 			{
-				requestmessage.RequestUri = GetUrl("CityStateLookup", "CityStateLookupRequest", new Xml.CityState
-				{
-					Zip5 = zip5,
-				});
+				requestmessage.RequestUri = GetUrl(
+					"CityStateLookup",
+					"CityStateLookupRequest",
+					new Xml.CityState { Zip5 = zip51, Id = 0, },
+						zip52 == null ? null : new Xml.CityState { Zip5 = zip52, Id = 1, },
+						zip53 == null ? null : new Xml.CityState { Zip5 = zip53, Id = 2, },
+						zip54 == null ? null : new Xml.CityState { Zip5 = zip54, Id = 3, },
+						zip55 == null ? null : new Xml.CityState { Zip5 = zip55, Id = 4, });
 
 				var response = await client.SendAsync(requestmessage);
 
@@ -144,14 +152,6 @@ namespace MeyerCorp.Usps.Api.Controllers
 				requestmessage.Dispose();
 				client.Dispose();
 			}
-		}
-
-		[HttpPost("citystatelookup", Name = "LookupCityStates")]
-		[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
-		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public IActionResult LookupCityState([FromBody]Xml.CityState[] cityStates)
-		{
-			throw new NotImplementedException();
 		}
 
 		[HttpGet("zipcodelookup", Name = "LookupZipCode")]
@@ -232,7 +232,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 
 		Uri GetUrl(string api, string type, params Xml.XmlFormatter[] inputs)
 		{
-			var input = String.Join(String.Empty, inputs.Select(a => a.ToString()));
+			var input = String.Join(String.Empty, inputs.Where(i=>i!=null).Select(a => a.ToString()));
 
 			var request = new StringBuilder();
 
