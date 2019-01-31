@@ -1,15 +1,18 @@
-﻿namespace MeyerCorp.Usps.Api.Xml
+﻿using System.Text;
+
+namespace MeyerCorp.Usps.Api.Xml
 {
-	internal class Track
+	internal class Track : XmlFormatter
 	{
-		public object Address1 { get; set; }
-		public object TrackId { get; set; }
-		public object City { get; set; }
-		public object FirmName { get; set; }
-		public int Id { get; set; }
-		public object State { get; set; }
-		public object Urbanization { get; set; }
-		public object Zip4 { get; set; }
-		public object Zip5 { get; set; }
+		public string TrackId { get; set; }
+
+		public override string ToString()
+		{
+			var address = new StringBuilder();
+
+			address.AppendXml("TrackID", string.Empty, "ID", TrackId);
+
+			return address.ToString();
+		}
 	}
 }

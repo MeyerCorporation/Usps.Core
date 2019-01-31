@@ -24,9 +24,9 @@ namespace MeyerCorp.Usps.Api.Controllers
 		public TrackingController(IOptions<UspsOptions> options, ILogger<TrackingController> logger) : base(options, logger) { }
 
 		[HttpGet("Tracking", Name = "Tracking")]
-		[SwaggerResponse(statusCode: 200, type: typeof(Address))]
+		[SwaggerResponse(statusCode: 200, type: typeof(Track))]
 		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public IActionResult Tracking([FromQuery]string trackId1,
+		public async Task<IActionResult> TrackAsync([FromQuery]string trackId1,
 			[FromQuery]string trackId2 = null,
 			[FromQuery]string trackId3 = null,
 			[FromQuery]string trackId4 = null,
@@ -37,18 +37,12 @@ namespace MeyerCorp.Usps.Api.Controllers
 
 			try
 			{
-				requestmessage.RequestUri = GetUrl("TrackV2", "TrackRequest", new Xml.Track
-				{
-					Address1 = address1,
-					TrackId = address2,
-					City = city,
-					FirmName = firmname,
-					Id = 0,
-					State = state,
-					Urbanization = urbanization,
-					Zip4 = zip4,
-					Zip5 = zip5,
-				});
+				requestmessage.RequestUri = GetUrl("TrackV2",
+					"TrackRequest", new Xml.Track { TrackId = trackId1, Id = 0, },
+						trackId2 == null ? null : new Xml.Track { TrackId = trackId2, Id = 1, },
+						trackId3 == null ? null : new Xml.Track { TrackId = trackId3, Id = 2, },
+						trackId4 == null ? null : new Xml.Track { TrackId = trackId4, Id = 3, },
+						trackId5 == null ? null : new Xml.Track { TrackId = trackId5, Id = 4, });
 
 				var response = await client.SendAsync(requestmessage);
 
@@ -64,7 +58,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 					}
 					else
 					{
-						return Ok(Address.Parse(responseString));
+						return Ok(Track.Parse(responseString));
 					}
 				}
 				else

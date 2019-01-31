@@ -21,17 +21,17 @@ namespace MeyerCorp.Usps.Api.Controllers
 
 		protected string GetError(string responseString)
 		{
-			return XElement.Parse(responseString).Descendants("Error").First().Element("Description").Value;
+			return XElement.Parse(responseString).DescendantsAndSelf("Error").First().Element("Description").Value;
 		}
 
 		protected bool CheckError(string responseString)
 		{
-			return XElement.Parse(responseString).Descendants("Error").Count() > 0;
+			return XElement.Parse(responseString).DescendantsAndSelf("Error").Count() > 0;
 		}
 
 		protected Uri GetUrl(string api, string type, params Xml.XmlFormatter[] inputs)
 		{
-			var input = String.Join(String.Empty, inputs.Select(a => a.ToString()));
+			var input = String.Join(String.Empty, inputs.Where(i=>i!=null).Select(a => a.ToString()));
 
 			var request = new StringBuilder();
 
