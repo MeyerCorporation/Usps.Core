@@ -1,4 +1,5 @@
 ﻿using MeyerCorp.Usps.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -17,24 +18,69 @@ namespace MeyerCorp.Usps.Api.Controllers
 	[Produces("application/json")]
 	[Route("api/usps")]
 	[EnableCors("UspsCors")]
-	public class TrackingController : Controller
+	[Authorize]
+	public class TrackingController : UspsController<TrackingController>
 	{
-		readonly UspsOptions _Options;
-		readonly ILogger<TrackingController> _Logger;
-
-		public TrackingController(IOptions<UspsOptions> options, ILogger<TrackingController> logger)
-		{
-			_Logger = logger;
-			_Options = options.Value;
-		}
+		public TrackingController(IOptions<UspsOptions> options, ILogger<TrackingController> logger) : base(options, logger) { }
 
 		[HttpGet("Tracking", Name = "Tracking")]
 		[SwaggerResponse(statusCode: 200, type: typeof(Address))]
 		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public IActionResult Tracking()
+		public IActionResult Tracking([FromQuery]string trackId1,
+			[FromQuery]string trackId2 = null,
+			[FromQuery]string trackId3 = null,
+			[FromQuery]string trackId4 = null,
+			[FromQuery]string trackId5 = null)
 		{
-				throw new NotImplementedException();
+			var client = new HttpClient();
+			var requestmessage = new HttpRequestMessage();
 
+			try
+			{
+				requestmessage.RequestUri = GetUrl("TrackV2", "TrackRequest", new Xml.Track
+				{
+					Address1 = address1,
+					TrackId = address2,
+					City = city,
+					FirmName = firmname,
+					Id = 0,
+					State = state,
+					Urbanization = urbanization,
+					Zip4 = zip4,
+					Zip5 = zip5,
+				});
+
+				var response = await client.SendAsync(requestmessage);
+
+				if (response.StatusCode == HttpStatusCode.OK)
+				{
+					var responseString = await response.Content.ReadAsStringAsync();
+
+					if (CheckError(responseString))
+					{
+						var message = GetError(responseString);
+						if (Logger != null) Logger.LogError("Bad Request", message);
+						return BadRequest(message);
+					}
+					else
+					{
+						return Ok(Address.Parse(responseString));
+					}
+				}
+				else
+					return StatusCode((int)response.StatusCode);
+			}
+			catch (Exception ex)
+			{
+				if (Logger != null) Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
+				System.Diagnostics.Debug.WriteLine(ex.Message);
+				throw;
+			}
+			finally
+			{
+				requestmessage.Dispose();
+				client.Dispose();
+			}
 		}
 
 		//[HttpPost("Tracking", Name = "Tracking")]
@@ -104,26 +150,5 @@ namespace MeyerCorp.Usps.Api.Controllers
 		//	throw new NotImplementedException();
 		//}
 
-		string GetError(string responseString)
-		{
-			return XElement.Parse(responseString).Descendants("Error").First().Element("Description").Value;
-		}
-
-		bool CheckError(string responseString)
-		{
-			return XElement.Parse(responseString).Descendants("Error").Count() > 0;
-		}
-
-		Uri GetUrl(string api, string type, params Xml.XmlFormatter[] inputs)
-		{
-			var input = String.Join(String.Empty, inputs.Select(a => a.ToString()));
-
-			var request = new StringBuilder();
-
-			return new Uri(request
-				.Append($"{_Options.BaseUrl}/{_Options.Path}?API={api}&XML=")
-				.AppendXml(type, input, "USERID", _Options.UserId)
-				.ToString());
-		}
 	}
 }

@@ -30,4 +30,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MeyerCorp\Usps\Api\" />
+  </ItemGroup>
+
 </Project>

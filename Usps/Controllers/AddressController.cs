@@ -1,32 +1,24 @@
 ﻿using MeyerCorp.Usps.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Swashbuckle.AspNetCore.Annotations;
 using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace MeyerCorp.Usps.Api.Controllers
 {
 	[Produces("application/json")]
 	[Route("api/usps")]
 	[EnableCors("UspsCors")]
-	public class AddressController : Controller
+	[Authorize]
+	public class AddressController : UspsController<AddressController>
 	{
-		readonly UspsOptions _Options;
-		readonly ILogger<AddressController> _Logger;
-
-		public AddressController(IOptions<UspsOptions> options, ILogger<AddressController> logger)
-		{
-			_Logger = logger;
-			_Options = options.Value;
-		}
+		public AddressController(IOptions<UspsOptions> options, ILogger<AddressController> logger) : base(options, logger) { }
 
 		[HttpGet("verify", Name = "VerifyAddress")]
 		[SwaggerResponse(statusCode: 200, type: typeof(Address))]
@@ -66,7 +58,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 					if (CheckError(responseString))
 					{
 						var message = GetError(responseString);
-						if (_Logger != null) _Logger.LogError("Bad Request", message);
+						if (Logger != null) Logger.LogError("Bad Request", message);
 						return BadRequest(message);
 					}
 					else
@@ -79,7 +71,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 			catch (Exception ex)
 			{
-				if (_Logger != null) _Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
+				if (Logger != null) Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
 				System.Diagnostics.Debug.WriteLine(ex.Message);
 				throw;
 			}
@@ -122,7 +114,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 					if (CheckError(responseString))
 					{
 						var message = GetError(responseString);
-						if (_Logger != null) _Logger.LogError("Bad Request", message);
+						if (Logger != null) Logger.LogError("Bad Request", message);
 						return BadRequest(message);
 					}
 					else
@@ -135,7 +127,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 			catch (Exception ex)
 			{
-				if (_Logger != null) _Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
+				if (Logger != null) Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
 				System.Diagnostics.Debug.WriteLine(ex.Message);
 				throw;
 			}
@@ -188,7 +180,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 					if (CheckError(responseString))
 					{
 						var message = GetError(responseString);
-						if (_Logger != null) _Logger.LogError("Bad Request", message);
+						if (Logger != null) Logger.LogError("Bad Request", message);
 						return BadRequest(message);
 					}
 					else
@@ -201,7 +193,7 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 			catch (Exception ex)
 			{
-				if (_Logger != null) _Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
+				if (Logger != null) Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
 				System.Diagnostics.Debug.WriteLine(ex.Message);
 				throw;
 			}
@@ -218,28 +210,6 @@ namespace MeyerCorp.Usps.Api.Controllers
 		public IActionResult LookupZipCodes([FromBody]Xml.ZipCode[] zipCodes)
 		{
 			throw new NotImplementedException();
-		}
-
-		string GetError(string responseString)
-		{
-			return XElement.Parse(responseString).Descendants("Error").First().Element("Description").Value;
-		}
-
-		bool CheckError(string responseString)
-		{
-			return XElement.Parse(responseString).Descendants("Error").Count() > 0;
-		}
-
-		Uri GetUrl(string api, string type, params Xml.XmlFormatter[] inputs)
-		{
-			var input = String.Join(String.Empty, inputs.Select(a => a.ToString()));
-
-			var request = new StringBuilder();
-
-			return new Uri(request
-				.Append($"{_Options.BaseUrl}/{_Options.Path}?API={api}&XML=")
-				.AppendXml(type, input, "USERID", _Options.UserId)
-				.ToString());
 		}
 	}
 }
