@@ -2,7 +2,7 @@
 
 namespace MeyerCorp.Usps.Api.Xml
 {
-	internal class Track : XmlFormatter
+	public class Track : XmlFormatter
 	{
 		public string TrackId { get; set; }
 
