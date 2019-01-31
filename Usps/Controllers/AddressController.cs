@@ -23,7 +23,8 @@ namespace MeyerCorp.Usps.Api.Controllers
 		[HttpGet("verify", Name = "VerifyAddress")]
 		[SwaggerResponse(statusCode: 200, type: typeof(Address))]
 		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public async Task<IActionResult> VerifyAddressAsync([FromQuery]string firmname = null, [FromQuery]string address1 = null,
+		public async Task<IActionResult> VerifyAddressAsync([FromQuery]string firmname = null, 
+			[FromQuery]string address1 = null,
 			[FromQuery]string address2 = null,
 			[FromQuery]string city = null,
 			[FromQuery]string state = null,
@@ -82,13 +83,13 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 		}
 
-		[HttpPost("verify", Name = "VerifyAddresses")]
-		[SwaggerResponse(statusCode: 200, type: typeof(Address[]))]
-		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public IActionResult VerifyAddresses([FromBody]Xml.Address[] addresses)
-		{
-			throw new NotImplementedException();
-		}
+		//[HttpPost("verify", Name = "VerifyAddresses")]
+		//[SwaggerResponse(statusCode: 200, type: typeof(Address[]))]
+		//[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		//public IActionResult VerifyAddresses([FromBody]Xml.Address[] addresses)
+		//{
+		//	throw new NotImplementedException();
+		//}
 
 		[HttpGet("citystatelookup", Name = "LookupCityState")]
 		[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
@@ -204,12 +205,12 @@ namespace MeyerCorp.Usps.Api.Controllers
 			}
 		}
 
-		[HttpPost("zipcodelookup", Name = "LookupZipCodes")]
-		[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
-		[SwaggerResponse(statusCode: 400, type: typeof(string))]
-		public IActionResult LookupZipCodes([FromBody]Xml.ZipCode[] zipCodes)
-		{
-			throw new NotImplementedException();
-		}
+		//[HttpPost("zipcodelookup", Name = "LookupZipCodes")]
+		//[SwaggerResponse(statusCode: 200, type: typeof(CityState[]))]
+		//[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		//public IActionResult LookupZipCodes([FromBody]Xml.ZipCode[] zipCodes)
+		//{
+		//	throw new NotImplementedException();
+		//}
 	}
 }
