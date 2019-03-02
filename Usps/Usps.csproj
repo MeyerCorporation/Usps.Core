@@ -22,16 +22,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MeyerCorp\**" />
+    <EmbeddedResource Remove="MeyerCorp\**" />
+    <None Remove="MeyerCorp\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.2.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="4.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="MeyerCorp\Usps\Api\" />
   </ItemGroup>
 
 </Project>

@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Test
 {
-	public class VerifiyTest
+	public class AddressTest
 	{
 		[Fact]
 		public async Task VerifyAddressTestAsync()

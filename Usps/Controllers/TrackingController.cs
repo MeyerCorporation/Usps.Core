@@ -23,8 +23,8 @@ namespace MeyerCorp.Usps.Api.Controllers
 	{
 		public TrackingController(IOptions<UspsOptions> options, ILogger<TrackingController> logger) : base(options, logger) { }
 
-		[HttpGet("Tracking", Name = "Tracking")]
-		[SwaggerResponse(statusCode: 200, type: typeof(Track))]
+		[HttpGet("Track", Name = "Track")]
+		[SwaggerResponse(statusCode: 200, type: typeof(Track[]))]
 		[SwaggerResponse(statusCode: 400, type: typeof(string))]
 		public async Task<IActionResult> TrackAsync([FromQuery]string trackId1,
 			[FromQuery]string trackId2 = null,
@@ -84,6 +84,64 @@ namespace MeyerCorp.Usps.Api.Controllers
 		//{
 		//	throw new NotImplementedException();
 		//}
+
+		[HttpGet("TrackFields", Name = "TrackFields")]
+		[SwaggerResponse(statusCode: 200, type: typeof(TrackFields[]))]
+		[SwaggerResponse(statusCode: 400, type: typeof(string))]
+		public async Task<IActionResult> TrackFieldsAsync([FromQuery]string Revision,
+			[FromQuery]string ClientIp = null,
+			[FromQuery]string SourceId = null,
+			[FromQuery]string SourceIdZIP = null,
+			[FromQuery]string trackId1 = null,
+			[FromQuery]string trackId2 = null,
+			[FromQuery]string trackId3 = null,
+			[FromQuery]string trackId4 = null,
+			[FromQuery]string trackId5 = null)
+		{
+			var client = new HttpClient();
+			var requestmessage = new HttpRequestMessage();
+
+			try
+			{
+				requestmessage.RequestUri = GetUrl("TrackV2",
+					"TrackFieldRequest", new Xml.Track { TrackId = trackId1, Id = 0, },
+						trackId2 == null ? null : new Xml.Track { TrackId = trackId2, Id = 1, },
+						trackId3 == null ? null : new Xml.Track { TrackId = trackId3, Id = 2, },
+						trackId4 == null ? null : new Xml.Track { TrackId = trackId4, Id = 3, },
+						trackId5 == null ? null : new Xml.Track { TrackId = trackId5, Id = 4, });
+
+				var response = await client.SendAsync(requestmessage);
+
+				if (response.StatusCode == HttpStatusCode.OK)
+				{
+					var responseString = await response.Content.ReadAsStringAsync();
+
+					if (CheckError(responseString))
+					{
+						var message = GetError(responseString);
+						if (Logger != null) Logger.LogError("Bad Request", message);
+						return BadRequest(message);
+					}
+					else
+					{
+						return Ok(Track.Parse(responseString));
+					}
+				}
+				else
+					return StatusCode((int)response.StatusCode);
+			}
+			catch (Exception ex)
+			{
+				if (Logger != null) Logger.LogCritical(ex.Message, ex.StackTrace.ToString(), ex);
+				System.Diagnostics.Debug.WriteLine(ex.Message);
+				throw;
+			}
+			finally
+			{
+				requestmessage.Dispose();
+				client.Dispose();
+			}
+		}
 
 		[HttpGet("TrackByEmail", Name = "TrackByEmail")]
 		[SwaggerResponse(statusCode: 200, type: typeof(CityState))]
