@@ -1,4 +1,4 @@
-<img alt="Meyer Corporation Logo" src="https://meyerlicensing.azurewebsites.net/images/Meyer.jpg" width="400" />
+<img alt="Meyer Corporation Logo" src="https://lemon-river-09725971e.azurestaticapps.net/images/Meyer.jpg" width="400" />
 
 # MeyerCorp.Usps
 
