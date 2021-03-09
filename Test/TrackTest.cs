@@ -106,7 +106,7 @@ namespace Test
 		{
 			public UspsOptions Value => new UspsOptions
 			{
-				UserId = Private.UserId,
+				UserId = "",// Private.UserId,
 				BaseUrl = "http://production.shippingapis.com",
 				Path = "ShippingAPI.dll",
 			};
