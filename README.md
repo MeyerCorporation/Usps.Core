@@ -1,3 +1,5 @@
+<img alt="Meyer Corporation Logo" src="https://lemon-river-09725971e.azurestaticapps.net/images/Meyer.jpg" width="400" />
+
 # MeyerCorp.Usps
 
 A more convenient wrapper of the United States Postal Service APIs. 
