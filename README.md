@@ -16,9 +16,17 @@ The solution contains four projects allowing two main configurations for use:
 
 This is a .NET Core Web API which allows the product to be configured and hosted like any .NET Core web app.
 
+### Serverless
+
+This is a .NET Core Azure Functions project which allows the product to be hosted as in Azure Functions
+
+### Controllers
+
+This is a .NET Core library which contains the controller and model components. It will yield an assembly which can referenced by the API project or any API project allowing any API project to expose the RESTful endpoints. It also is a NuGet package which allows the controller and models to be included in an existing web application.
+
 ### USPS
 
-This is a .NET Core library which contains the controller and model components. It will yield an assembly which is refrenced by the API project and also a NuGet package which allows the controller and models to be included in an existing web application.
+This is a .NET Core library which contains actual translation of the REST inputs to the non-standard input of the USPS API. It also creates a NuGet package which allows the functionality to be included in other web application.
 
 ### Client
 
@@ -33,6 +41,8 @@ This is a collection of unit tests written in xunit.
 
 ### Prerequisites
 
+.NET Core 3.1 or higher.
+
 ### Installing
 
 ## Running the tests
@@ -45,7 +55,7 @@ This is a collection of unit tests written in xunit.
 
 ## Built With
 
-* [.NET Core 2.2](https://docs.microsoft.com/en-us/dotnet/core/)
+* [.NET Core 3.1](https://docs.microsoft.com/en-us/dotnet/core/)
 * [USPS Web API](https://www.usps.com/business/web-tools-apis/welcome.htm)
 
 ## Contributing
