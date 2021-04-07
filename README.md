@@ -16,9 +16,17 @@ The solution contains four projects allowing two main configurations for use:
 
 This is a .NET Core Web API which allows the product to be configured and hosted like any .NET Core web app.
 
+### Serverless
+
+This is a .NET Core Azure Functions project which allows the product to be hosted as in Azure Functions
+
+### Controllers
+
+This is a .NET Core library which contains the controller and model components. It will yield an assembly which can referenced by the API project or any API project allowing any API project to expose the RESTful endpoints. It also is a NuGet package which allows the controller and models to be included in an existing web application.
+
 ### USPS
 
-This is a .NET Core library which contains the controller and model components. It will yield an assembly which is refrenced by the API project and also a NuGet package which allows the controller and models to be included in an existing web application.
+This is a .NET Core library which contains actual translation of the REST inputs to the non-standard input of the USPS API. It also creates a NuGet package which allows the functionality to be included in other web application.
 
 ### Client
 
@@ -31,9 +39,34 @@ This is a collection of unit tests written in xunit.
 
 ## Getting Started
 
+
 ### Prerequisites
 
+.NET Core 3.1 or higher.
+
 ### Installing
+
+Using Usps.Core depends on your needs:
+
+#### Adding functionality and endpoints to an existing .NET Core Web API project:
+
+Merely install the MeyerCorp.Usps.Api NuGet package to add the controllers to your .NET Core Web project. You will then have the functionality available internally to the application as well as exposing it to your API consumers. Keep in mind that consumers will be using your API key. They cannot pass their own at this time.
+
+#### Adding functionality to an existing .NET Core project:
+
+Merely install the MeyerCorp.Usps.Core NuGet package to add the functionality to your .NET Core project. You will then have the functionality available internally to the application. Keep in mind that this will be using your one API key. You cannot pass in various keys at this time.
+
+#### Hosting your own Web API:
+
+Simply deploy the Api project to an Azure app service or an IIS server.
+
+#### Hosting serverless in Azure:
+
+Simply deploy the Serverless project to an Azure Functions app.
+
+##### TL;DR
+
+This was originally written to add traditional REST endpoints to any Web API project. However, now I think it's better to host as a Azure Funtions project. This will allow your organization to be able easily access the USPS API w/o the non-traditional stacking of XML structures into the URL of the calls made to the USPS API. Do not expose this to any public users. If they need the functionality, they can go to USPS directly, or host their own service. Remember, this is a wrapper intended to expose the functionality of the USPS API in a more RESTful way.
 
 ## Running the tests
 
@@ -45,7 +78,7 @@ This is a collection of unit tests written in xunit.
 
 ## Built With
 
-* [.NET Core 2.2](https://docs.microsoft.com/en-us/dotnet/core/)
+* [.NET Core 3.1](https://docs.microsoft.com/en-us/dotnet/core/)
 * [USPS Web API](https://www.usps.com/business/web-tools-apis/welcome.htm)
 
 ## Contributing
@@ -72,4 +105,6 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## References
 
-[Welcome to the Web Tools API Portal](https://www.usps.com/business/web-tools-apis/welcome.htm)
+* [Welcome to the Web Tools API Portal](https://www.usps.com/business/web-tools-apis/welcome.htm)
+* [Azure Functions Quick Start](https://docs.microsoft.com/en-us/azure/azure-functions/functions-create-your-first-function-visual-studio#:~:text=Table%201%20%20%20%20Setting%20%20,created%20function%20can%20be%20triggered%20by%20...%20)
+* [.NET Core Web API Tutorial](https://docs.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-5.0&tabs=visual-studio)
