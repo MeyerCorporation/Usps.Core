@@ -21,10 +21,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Xml\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="Meyer M_Blue.jpg">
       <Pack>True</Pack>
       <PackagePath></PackagePath>

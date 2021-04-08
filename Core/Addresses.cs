@@ -42,10 +42,6 @@ namespace MeyerCorp.Usps.Core
 				Addresses = addresses,
 			};
 
-			var id = 0;
-			foreach (var address in addresses)
-				address.Id = id++;
-
 			Request.RequestUri = GetUrl(apiName: "Verify", type: "AddressValidateRequest", xmlrequest.ToString());
 
 			var response = await GetResponseStringAsync();

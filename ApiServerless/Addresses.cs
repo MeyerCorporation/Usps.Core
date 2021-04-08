@@ -70,14 +70,15 @@ namespace MeyerCorp.Usps.Core.Api
 		[OpenApiParameter(name: "zip5_5", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "Destination 5-digit ZIP Code. Numeric values (0-9) only. If International, all zeroes. (fifth address)")]
 		[OpenApiParameter(name: "zip4_5", In = ParameterLocation.Query, Required = false, Type = typeof(string), Description = "Destination ZIP + 4 Numeric values(0 - 9) only.If International, all zeroes.")]
 
-		[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "text/plain", bodyType: typeof(string), Description = "The OK response")]
+		[OpenApiResponseWithBody(statusCode: HttpStatusCode.OK, contentType: "application/json", bodyType: typeof(IEnumerable<Models.Address>), Description = "The OK response")]
 		public async Task<IActionResult> Validate([HttpTrigger(AuthorizationLevel.Function, "get", Route = "Address/Validate")] HttpRequest req, ILogger log)
 		{
 			log.LogInformation("HTTP trigger for Validate function processed a request.");
 
-			if (!req.Query.ContainsKey("revision")) return new BadRequestObjectResult("Revision must be specified in the query: 'revision=0|1'.");
+			var revision = req.Query.ContainsKey("revision")
+					? Int32.Parse(req.Query["revision"])
+					: 0;
 
-			var revision = Int32.Parse(req.Query["revision"]);
 			var addresses = GetAddresses(req.Query).ToArray();
 
 			try

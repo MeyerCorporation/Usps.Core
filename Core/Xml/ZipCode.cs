@@ -52,7 +52,7 @@ namespace MeyerCorp.Usps.Core.Xml
 		/// </summary>
 		/// <remarks></remarks>
 		public string Error { get; set; }
-		public string Urbanization { get; internal set; }
+		public string Urbanization { get; set; }
 
 		public override string ToString()
 		{
@@ -67,7 +67,7 @@ namespace MeyerCorp.Usps.Core.Xml
 			address.AppendXml("Zip5", Zip5);
 			address.AppendXml("Zip4", Zip4);
 
-			return $"<Address ID =\"{Id}\">{address.ToString()}</Address>";
+			return $"<Address ID =\"{Id}\">{address}</Address>";
 		}
 	}
 }
