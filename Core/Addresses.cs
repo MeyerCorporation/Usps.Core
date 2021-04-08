@@ -56,7 +56,24 @@ namespace MeyerCorp.UspsCore.Core
         /// The ZipCodeLookup API, which returns the ZIP Code and ZIP Code + 4 corresponding to the given address, city, and state (use USPS state abbreviations). The ZipCodeLookup API processes up to five lookups per request.
         /// </summary>
         /// <returns></returns>
-        public object LookupZipCode() { throw new NotImplementedException(); }
+        public async Task<IEnumerable<Models.ZipCode>> LookupZipCodeAsync(params Xml.Address[] addresses)       
+          {
+            var xmlrequest = new ZipCodeLookupRequest
+            {
+                Addresses = addresses,
+            };
+
+            Request.RequestUri = GetUrl("ZipCodeLookup", "ZipCodeLookupRequest", xmlrequest.ToString());
+
+            var response = await GetResponseStringAsync();
+
+            var document = XDocument.Parse(response);
+
+            return document
+                .Root
+                .Elements("Address")
+                .Select(e => Models.ZipCode.Parse(e));
+        }
 
         /// <summary>
         /// City/State Lookup API returns the city and state corresponding to the given ZIP Code. The CityStateLookup API processes up to five lookups per request.
@@ -131,6 +148,11 @@ namespace MeyerCorp.UspsCore.Core
 
                 return String.Join(String.Empty,xml);
             }
+        }
+
+        private class ZipCodeLookupRequest
+        {
+            public Xml.Address[] Addresses { get;  set; }
         }
     }
 }

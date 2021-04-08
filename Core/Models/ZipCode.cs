@@ -47,25 +47,23 @@ namespace MeyerCorp.UspsCore.Core.Models
 		/// <remarks>Numeric values(0-9) only.If International, all zeroes.</remarks>
 		public string Zip4 { get; set; }
 
-		//internal static ZipCode Parse(string input)
-		//{
-		//	var parsed = XElement.Parse(input).Element("Address");
+		internal static ZipCode Parse(XElement element)
+		{
+			var addressp1 = element.Element("Address1")?.Value;
+			var addressp2 = element.Element("Address2")?.Value;
 
-		//	var addressp1 = parsed.Element("Address1")?.Value;
-		//	var addressp2 = parsed.Element("Address2")?.Value;
-
-		//	return new ZipCode
-		//	{
-		//		Address1 = addressp1,
-		//		Address2 = addressp2,
-		//		City = parsed.Element("City")?.Value,
-		//		Error = parsed.Element("Error")?.Value,
-		//		FirmName = parsed.Element("FirmName")?.Value,
-		//		State = parsed.Element("State")?.Value,
-		//		Zip4 = parsed.Element("Zip4")?.Value,
-		//		Zip5 = parsed.Element("Zip5")?.Value,
-		//		Id = parsed.Attribute("ID")?.Value,
-		//	};
-		//}
+			return new ZipCode
+			{
+				Address1 = addressp1,
+				Address2 = addressp2,
+				City = element.Element("City")?.Value,
+				Error = element.Element("Error")?.Value,
+				FirmName = element.Element("FirmName")?.Value,
+				State = element.Element("State")?.Value,
+				Zip4 = element.Element("Zip4")?.Value,
+				Zip5 = element.Element("Zip5")?.Value,
+				Id = element.Attribute("ID")?.Value,
+			};
+		}
 	}
 }

@@ -196,7 +196,7 @@ namespace MeyerCorp.UspsCore.Test.Core
             Assert.Equal("94533", result.Zip5);
         }
 
-        [Fact(DisplayName = "Single City State Lookup")]
+        [Fact(DisplayName = "Double City State Lookup")]
         public async Task Test5Async()
         {
             var UserId = Configuration["ApiUsername"];
@@ -215,5 +215,58 @@ namespace MeyerCorp.UspsCore.Test.Core
             Assert.Equal("SAN JOSE", results.Last().City);
             Assert.Equal("CA", results.Last().State);
         }
+    
+    
+	    [Fact(DisplayName = "Double Zip Code Lookup")]
+        public async Task Test6Async()
+        {
+            var UserId = Configuration["ApiUsername"];
+
+            var addresses = new Addresses
+            {
+                UserId = UserId,
+                BaseUrl = BaseUrl,
+            };
+
+            var results = await addresses.LookupZipCodeAsync(new UspsCore.Core.Xml.Address[]
+            {
+                new UspsCore.Core.Xml.Address
+                {
+                    Address1 = "2001 Meyer Way",
+					//Address2 = "address2",
+					City = "Fairfield",
+					//FirmName = "firmname",
+					Id = 0,
+                    State = "CA",
+					//Urbanization = "urbanization",
+					//Zip4 = "9999",
+					//Zip5 = "95687",
+				},
+                new UspsCore.Core.Xml.Address
+                {
+                    Address1 = "1 Meyer Plaza",
+					//Address2 = "address2",
+					City = "Vallejo",
+					//FirmName = "firmname",
+					Id = 0,
+                    State = "CA",
+					//Urbanization = "urbanization",
+					//Zip4 = "9999",
+					//Zip5 = "95687",
+				}
+
+            });
+
+            var result = results.First();
+
+            Assert.Equal("0", result.Id);
+            Assert.Null(result.Address1);
+            Assert.Equal("2001 MEYER WAY", result.Address2);
+            Assert.Equal("FAIRFIELD", result.City);
+            Assert.Null(result.Error);
+            Assert.Null(result.FirmName);
+            Assert.Equal("CA", result.State);
+            Assert.Equal("6802", result.Zip4);
+            Assert.Equal("94533", result.Zip5);        }
     }
 }
