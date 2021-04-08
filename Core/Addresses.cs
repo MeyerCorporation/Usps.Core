@@ -1,4 +1,5 @@
 ﻿using MeyerCorp.Usps.Core.Extensions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,11 @@ using System.Xml.Linq;
 
 namespace MeyerCorp.Usps.Core
 {
-	public class Addresses : Api
+	public class Addresses : Api, IAddresses
 	{
+		public Addresses(IOptions<ApiOptions> options) : base(options) { }
+
+		//public Addresses(IOptions<ApiOptions> options)
 		#region Validate
 
 		/// <summary>

@@ -64,7 +64,7 @@ namespace MeyerCorp.Usps.Api.Xml
 			address.AppendXml("Zip5", Zip5);
 			address.AppendXml("Zip4", Zip4);
 
-			return $"<Address ID=\"{Id}\">{address.ToString()}</Address>";
+			return $"<Address ID=\"{Id}\">{address}</Address>";
 		}
 	}
 }

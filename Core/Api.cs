@@ -1,4 +1,5 @@
 ﻿using MeyerCorp.Usps.Core.Extensions;
+using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Net;
@@ -9,92 +10,98 @@ using System.Xml.Linq;
 
 namespace MeyerCorp.Usps.Core
 {
-    public abstract class Api : IDisposable
-    {
-        public string UserId { get; set; }
-        public string BaseUrl { get; set; }
-        public string Path { get; set; }
-        protected HttpClient HttpClient { get; set; } = new();
-        protected HttpRequestMessage Request { get; set; } = new();
-        private bool disposedValue;
+	public abstract class Api : IDisposable
+	{
+		public Api(IOptions<ApiOptions> options)
+		{
+			UserId = options.Value.UspsApiKey;
+			BaseUrl = options.Value.UspsBaseUrl;
+		}
 
-        protected async Task<string> GetResponseStringAsync() 
-        {
-            var response = await HttpClient.SendAsync(Request);
-            var responseString = await response.Content.ReadAsStringAsync();
+		protected string UserId { get; set; }
+		protected string BaseUrl { get; set; }
+		protected string Path { get; set; }
+		protected HttpClient HttpClient { get; set; } = new HttpClient();
+		protected HttpRequestMessage Request { get; set; } = new HttpRequestMessage();
+		private bool disposedValue;
 
-            if (response.StatusCode == HttpStatusCode.OK)
-            {
-                if (CheckError(responseString))
-                {
-                    var message = GetError(responseString).Trim();
-                    throw new InvalidOperationException(message);
-                }
-                else
-                {
-                    return responseString;
-                }
-            }
-            else
-                throw new InvalidOperationException(responseString);
-        }
+		protected async Task<string> GetResponseStringAsync()
+		{
+			var response = await HttpClient.SendAsync(Request);
+			var responseString = await response.Content.ReadAsStringAsync();
 
-        protected Uri GetUrl(string apiName, string type, string input)
-        {
-            var request = new StringBuilder();
+			if (response.StatusCode == HttpStatusCode.OK)
+			{
+				if (CheckError(responseString))
+				{
+					var message = GetError(responseString).Trim();
+					throw new InvalidOperationException(message);
+				}
+				else
+				{
+					return responseString;
+				}
+			}
+			else
+				throw new InvalidOperationException(responseString);
+		}
 
-            return new Uri(request
-                .Append($"{BaseUrl}/{Path}?API={apiName}&XML=")
-                .AppendXml(type, input, "USERID", UserId)
-                .ToString());
-        }
+		protected Uri GetUrl(string apiName, string type, string input)
+		{
+			var request = new StringBuilder();
 
-        protected static bool CheckError(string responseString)
-        {
-            return XElement
-                .Parse(responseString)
-                .DescendantsAndSelf("Error")
-                .Any();
-        }
+			return new Uri(request
+				.Append($"{BaseUrl}/{Path}?API={apiName}&XML=")
+				.AppendXml(type, input, "USERID", UserId)
+				.ToString());
+		}
 
-        protected static string GetError(string responseString)
-        {
-            return XElement
-                .Parse(responseString)
-                .DescendantsAndSelf("Error")
-                .First()
-                .Element("Description")
-                .Value;
-        }
+		protected static bool CheckError(string responseString)
+		{
+			return XElement
+				.Parse(responseString)
+				.DescendantsAndSelf("Error")
+				.Any();
+		}
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    if (Request != null) Request.Dispose();
-                    if (HttpClient != null) HttpClient.Dispose();
-                }
+		protected static string GetError(string responseString)
+		{
+			return XElement
+				.Parse(responseString)
+				.DescendantsAndSelf("Error")
+				.First()
+				.Element("Description")
+				.Value;
+		}
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
-                disposedValue = true;
-            }
-        }
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!disposedValue)
+			{
+				if (disposing)
+				{
+					if (Request != null) Request.Dispose();
+					if (HttpClient != null) HttpClient.Dispose();
+				}
 
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~Api()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
+				// TODO: free unmanaged resources (unmanaged objects) and override finalizer
+				// TODO: set large fields to null
+				disposedValue = true;
+			}
+		}
 
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
-        }
-    }
+		// // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+		// ~Api()
+		// {
+		//     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+		//     Dispose(disposing: false);
+		// }
+
+		public void Dispose()
+		{
+			// Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+			Dispose(disposing: true);
+			GC.SuppressFinalize(this);
+		}
+	}
 }

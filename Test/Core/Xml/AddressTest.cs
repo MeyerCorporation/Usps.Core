@@ -1,9 +1,9 @@
-﻿using MeyerCorp.UspsCore.Core.Xml;
+﻿using MeyerCorp.Usps.Api.Xml;
 using System.Diagnostics;
 using System.Xml.Linq;
 using Xunit;
 
-namespace MeyerCorp.UspsCore.Test.Core.Xml
+namespace Meyer.UspsCore.Test.Core.Xml
 {
 	public class AddressTest
 	{

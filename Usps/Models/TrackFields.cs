@@ -8,7 +8,7 @@ namespace MeyerCorp.Usps.Api.Models
 
 		public DateTime? GuaranteedDeliveryDate { get; set; }
 
-		public TrackSummary TrackSummary { get; set; }
+		//public TrackSummary TrackSummary { get; set; }
 
 		public TrackDetail[] TrackDetails { get; set; }
 

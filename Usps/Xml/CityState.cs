@@ -12,7 +12,7 @@ namespace MeyerCorp.Usps.Api.Xml
 
 			address.AppendXml("Zip5", Zip5);
 
-			return $"<ZipCode ID=\"{Id}\">{address.ToString()}</ZipCode>";
+			return $"<ZipCode ID=\"{Id}\">{address}</ZipCode>";
 		}
 	}
 }

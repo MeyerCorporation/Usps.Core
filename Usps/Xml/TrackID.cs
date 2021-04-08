@@ -18,7 +18,7 @@ namespace MeyerCorp.Usps.Api.Xml
 			output.AppendXml("DestinationZipCode", DestinationZipCode);
 			if (MailingDate.HasValue) output.AppendXml("MailingDate", MailingDate.Value.ToString("yyyy-MM-dd"));
 
-			return $"<TrackID ID=\"{TrackId}\">{output.ToString()}</TrackID>";
+			return $"<TrackID ID=\"{TrackId}\">{output}</TrackID>";
 		}
 
 	}
