@@ -1,22 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+	<TargetFramework>net5.0</TargetFramework>
 
-    <IsPackable>false</IsPackable>
+	<IsPackable>false</IsPackable>
+
+	<AssemblyName>MeyerCorp.UspsCore.Test</AssemblyName>
+
+	<RootNamespace>MeyerCorp.UspsCore.Test</RootNamespace>
+	<UserSecretsId>MeyerCorp.UspsCore.Test-76DA1CFF-C436-4817-A422-C644B0F50CA7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.1" />
-    <PackageReference Include="xunit" Version="2.4.1" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
+	<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="5.0.0" />
+	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.9.4" />
+	<PackageReference Include="xunit" Version="2.4.1" />
+	<PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+	  <PrivateAssets>all</PrivateAssets>
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+	</PackageReference>
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Usps\Usps.csproj" />
+	<ProjectReference Include="..\Core\UspsCore.csproj" />
+	<ProjectReference Include="..\Usps\Usps.csproj" />
   </ItemGroup>
-
+  <ItemGroup>
+	<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />
+  </ItemGroup>
 </Project>

@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>MeyerCorp.UspsCore.Core</AssemblyName>
+    <RootNamespace>MeyerCorp.UspsCore.Core</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Xml\" />
+  </ItemGroup>
 
 </Project>

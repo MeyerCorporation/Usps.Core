@@ -7,42 +7,45 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using MeyerCorp.Usps.Addresses;
 
-namespace Serverless
+namespace MeyerCorp.Usps.Serverless
 {
-    public static class Addresses
-    {
-        [FunctionName("Address")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
-            ILogger log)
-        {
-            log.LogInformation("C# HTTP Address function processed a request.");
+	public static class Addresses
+	{
+		[FunctionName("Address")]
+		public static async Task<IActionResult> Run(
+			[HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req,
+			ILogger log)
+		{
+			log.LogInformation("C# HTTP Address function processed a request.");
 
-            var firmname = req.Query["firmname"];
-            var address1 = req.Query["address1"];
-            var address2 = req.Query["address2"];
-            var city = req.Query["city"];
-            var state = req.Query["state"];
-            var zip5 = req.Query["zip5"];
-            var zip4 = req.Query["zip4"];
-            var urbanization = req.Query["urbanization"];
+			var firmname = req.Query["firmname"];
+			var address1 = req.Query["address1"];
+			var address2 = req.Query["address2"];
+			var city = req.Query["city"];
+			var state = req.Query["state"];
+			var zip5 = req.Query["zip5"];
+			var zip4 = req.Query["zip4"];
+			var urbanization = req.Query["urbanization"];
 
-            var address = new AddressValidation(firmname,
-                address1,
-                address2,
-                city,
-                state,
-                zip5,
-                zip4,
-                urbanization);
+			var validator = new AddressValidation(baseUrl: Environment.GetEnvironmentVariable("BaseUrl"),
+				path: Environment.GetEnvironmentVariable("Path"));
 
-            await address.VerifyAddressAsync();
-            string responseMessage = string.IsNullOrEmpty(address1)
-                ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
-                : $"Hello, {address1}. This HTTP triggered function executed successfully.";
+			try
+			{
+				var address = await validator.VerifyAddressAsync(firmname,
+					address1,
+					address2,
+					city,
+					state,
+					zip5,
+					zip4,
+					urbanization);
 
-            return new OkObjectResult(responseMessage);
-        }
-    }
+				return new OkObjectResult(address);
+			}
+			catch (InvalidOperationException ex) { return new BadRequestObjectResult(ex.Message); }
+		}
+	}
 }
