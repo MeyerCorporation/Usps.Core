@@ -1,6 +1,7 @@
 ﻿using MeyerCorp.UspsCore.Core;
 using Microsoft.Extensions.Configuration;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -80,7 +81,7 @@ namespace MeyerCorp.UspsCore.Test.Core
 			Assert.Equal("Address Not Found.", ex.Message);
 		}
 
-		[Fact(DisplayName = "Address Not Found")]
+		[Fact(DisplayName = "Single Address")]
 		public async Task Test3Async()
 		{
 			var UserId = Configuration["ApiUsername"];
@@ -91,7 +92,7 @@ namespace MeyerCorp.UspsCore.Test.Core
 				BaseUrl = BaseUrl,
 			};
 
-			var result = await addresses.ValidateAsync(1, new UspsCore.Core.Xml.Address[]
+			var results = await addresses.ValidateAsync(1, new UspsCore.Core.Xml.Address[]
 			{
 				new UspsCore.Core.Xml.Address
 				{
@@ -106,6 +107,8 @@ namespace MeyerCorp.UspsCore.Test.Core
 					//Zip5 = "95687",
 				}
 			});
+
+			var result = results.First();
 
 			Assert.Equal("0", result.Id);
 			Assert.Null(result.Address1);

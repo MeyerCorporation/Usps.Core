@@ -8,8 +8,6 @@ namespace MeyerCorp.UspsCore.Core.Models
 
 		public string Error { get; set; }
 
-		public abstract void Parse(string input);
-
 		protected static bool? ToBool(string value)
 		{
 			if (string.IsNullOrWhiteSpace(value))

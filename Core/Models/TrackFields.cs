@@ -30,10 +30,5 @@ namespace MeyerCorp.UspsCore.Core.Models
 		//	//	//Id = parsed.Attribute("ID")?.Value,
 		//	//};
 		//}
-
-		public override void Parse(string input)
-		{
-			throw new NotImplementedException();
-		}
 	}
 }

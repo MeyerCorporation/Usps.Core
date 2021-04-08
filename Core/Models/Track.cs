@@ -23,10 +23,5 @@ namespace MeyerCorp.UspsCore.Core.Models
 		//		})
 		//	.ToArray();
 		//}
-
-		public override void Parse(string input)
-		{
-			throw new System.NotImplementedException();
-		}
 	}
 }
