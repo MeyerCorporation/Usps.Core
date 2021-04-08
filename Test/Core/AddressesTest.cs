@@ -122,8 +122,8 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Null(result.CityAbbreviation);
 			Assert.Equal("01", result.DeliveryPoint);
 			Assert.False(result.DPVCMRA);
-			Assert.True(result.DPVConfirmation);
-			Assert.Equal("AABB", result.DPVFootnotes);
+			//Assert.True(result.DPVConfirmation);
+			Assert.Equal("AABB", result.DPVFootnotes.Raw);
 			Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
 			Assert.Null(result.Footnotes);
@@ -186,8 +186,8 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Null(result.CityAbbreviation);
 			Assert.Equal("01", result.DeliveryPoint);
 			Assert.False(result.DPVCMRA);
-			Assert.True(result.DPVConfirmation);
-			Assert.Equal("AABB", result.DPVFootnotes);
+			//Assert.True(result.DPVConfirmation);
+			Assert.Equal("AABB", result.DPVFootnotes.Raw);
 			Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
 			Assert.Null(result.Footnotes);
