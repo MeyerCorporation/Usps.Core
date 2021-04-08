@@ -22,7 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-	<ProjectReference Include="..\Core\UspsCore.csproj" />
 	<ProjectReference Include="..\Usps\Usps.csproj" />
   </ItemGroup>
   <ItemGroup>
