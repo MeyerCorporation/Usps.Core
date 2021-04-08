@@ -16,10 +16,9 @@ namespace MeyerCorp.UspsCore.Core
 		public string Path { get; set; }
 		protected HttpClient HttpClient { get; set; } = new();
 		protected HttpRequestMessage Request { get; set; } = new();
-		protected abstract string ApiName { get; set; }
 		private bool disposedValue;
 
-		protected static async Task<T> CheckResponseAsync<T>(System.Net.Http.HttpResponseMessage response) where T : Models.Model, new()
+		protected static async Task<T> CheckResponseAsync<T>(HttpResponseMessage response) where T : Models.Model, new()
 		{
 			var responseString = await response.Content.ReadAsStringAsync();
 
@@ -43,12 +42,12 @@ namespace MeyerCorp.UspsCore.Core
 				throw new InvalidOperationException(responseString);
 		}
 
-		protected Uri GetUrl(string type, string input)
+		protected Uri GetUrl(string apiName,string type,  string input)
 		{
 			var request = new StringBuilder();
 
 			return new Uri(request
-				.Append($"{BaseUrl}/{Path}?API={ApiName}&XML=")
+				.Append($"{BaseUrl}/{Path}?API={apiName}&XML=")
 				.AppendXml(type, input, "USERID", UserId)
 				.ToString());
 		}
