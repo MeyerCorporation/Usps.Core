@@ -78,17 +78,15 @@ namespace MeyerCorp.UspsCore.Core
             };
 
             Request.RequestUri = GetUrl("CityStateLookup", "CityStateLookupRequest", xmlrequest.ToString());
-            //new Api.Xml.CityState { Zip5 = zip51, Id = 0, },
-            //		zip52 == null ? null : new Api.Xml.CityState { Zip5 = zip52, Id = 1, },
-            //		zip53 == null ? null : new Api.Xml.CityState { Zip5 = zip53, Id = 2, },
-            //		zip54 == null ? null : new Api.Xml.CityState { Zip5 = zip54, Id = 3, },
-            //		zip55 == null ? null : new Api.Xml.CityState { Zip5 = zip55, Id = 4, });
 
-            var response = await HttpClient.SendAsync(Request);
+            var response = await GetResponseStringAsync();
 
-            // return await CheckResponseAsync<Models.CityState>(response);
+            var document = XDocument.Parse(response);
 
-            throw new NotImplementedException();
+            return document
+                .Root
+                .Elements("ZipCode")
+                .Select(e => Models.CityState.Parse(e));
         }
 
         private class AddressValidateRequest
@@ -117,6 +115,22 @@ namespace MeyerCorp.UspsCore.Core
             public string Zip53 { get; set; }
             public string Zip54 { get; set; }
             public string Zip55 { get; set; }
+
+            public override string ToString()
+            {
+                var index=0;
+                var xml= new Xml.CityState[]
+                {
+                    String.IsNullOrWhiteSpace(Zip51) ? null : new Xml.CityState { Zip5 = Zip51, Id = index++, },
+            		String.IsNullOrWhiteSpace(Zip52) ? null : new Xml.CityState { Zip5 = Zip52, Id = index++, },
+            		String.IsNullOrWhiteSpace(Zip53) ? null : new Xml.CityState { Zip5 = Zip53, Id = index++, },
+            		String.IsNullOrWhiteSpace(Zip54) ? null : new Xml.CityState { Zip5 = Zip54, Id = index++, },
+            		String.IsNullOrWhiteSpace(Zip55) ? null : new Xml.CityState { Zip5 = Zip55, Id = index++, }
+                }
+                .Where(i=>i!=null);
+
+                return String.Join(String.Empty,xml);
+            }
         }
     }
 }
