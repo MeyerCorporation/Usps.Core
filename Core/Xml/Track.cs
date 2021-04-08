@@ -1,7 +1,7 @@
-﻿using MeyerCorp.UspsCore.Core.Extensions;
+﻿using MeyerCorp.Usps.Core.Extensions;
 using System.Text;
 
-namespace MeyerCorp.UspsCore.Core.Xml
+namespace MeyerCorp.Usps.Core.Xml
 {
 	public class Track : XmlFormatter
 	{

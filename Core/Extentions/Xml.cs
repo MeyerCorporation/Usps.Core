@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace MeyerCorp.UspsCore.Core.Extensions
+namespace MeyerCorp.Usps.Core.Extensions
 {
 	public static partial class Methods
 	{

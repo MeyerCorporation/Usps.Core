@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Xml.Linq;
 
-namespace MeyerCorp.UspsCore.Core.Models
+namespace MeyerCorp.Usps.Core.Models
 {
 	public class TrackDetail
 	{

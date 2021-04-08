@@ -1,4 +1,4 @@
-﻿using MeyerCorp.UspsCore.Core.Extensions;
+﻿using MeyerCorp.Usps.Core.Extensions;
 using System;
 using System.Linq;
 using System.Net;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace MeyerCorp.UspsCore.Core
+namespace MeyerCorp.Usps.Core
 {
     public abstract class Api : IDisposable
     {

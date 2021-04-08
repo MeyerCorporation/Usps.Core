@@ -1,4 +1,4 @@
-﻿namespace MeyerCorp.UspsCore.Core.Xml
+﻿namespace MeyerCorp.Usps.Core.Xml
 {
 	public abstract class XmlFormatter
 	{

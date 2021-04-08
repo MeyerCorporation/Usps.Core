@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using MeyerCorp.UspsCore.Core.Extensions;
+using MeyerCorp.Usps.Core.Extensions;
 
-namespace MeyerCorp.UspsCore.Core.Xml
+namespace MeyerCorp.Usps.Core.Xml
 {
 	public class TrackFields : XmlFormatter
 	{

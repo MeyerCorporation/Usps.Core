@@ -1,6 +1,6 @@
 using System;
 
-namespace MeyerCorp.UspsCore.Core
+namespace MeyerCorp.Usps.Core
 {
     public class PriceCalculator
     {

@@ -1,4 +1,4 @@
-﻿using MeyerCorp.UspsCore.Core.Extensions;
+﻿using MeyerCorp.Usps.Core.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace MeyerCorp.UspsCore.Core
+namespace MeyerCorp.Usps.Core
 {
 	public class Addresses : Api
 	{
