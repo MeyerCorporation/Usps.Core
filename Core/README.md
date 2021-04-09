@@ -13,12 +13,12 @@ The USPS APIs don't follow standards of either REST or SOAP but instead pass XML
 
 > All endpoint code has links in XML comments to their corresponding documentation on the USPS API website. Refer to that documenation for information on errors and footnote values. *Currently, only those API endpoints w/o strike thru are supported.*
 
-1. Address Endpoints
+1. [Address Endpoints](https://www.usps.com/business/web-tools-apis/address-information-api.htm)
     - Address Validation/Standardization
     - City & State Lookup
     - Zip Code™ Lookup
-2. ~~Tracking & Delivery Information APIs
-Tracking~~
+2. ~~[Tracking & Delivery Information APIs
+Tracking](https://www.usps.com/business/web-tools-apis/track-and-confirm-api_files/track-and-confirm-api.htm)~~
     - ~~Tracking by Email~~
     - ~~Proof of Delivery~~
     - ~~Tracking Proof of Delivery~~
