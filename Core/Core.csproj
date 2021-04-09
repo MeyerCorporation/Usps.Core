@@ -6,7 +6,7 @@
     <RootNamespace>MeyerCorp.Usps.Core</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.0-preview-1</Version>
+    <Version>0.0.2-preview</Version>
     <Authors>Daniel Przybylski</Authors>
     <Company>Meyer Corporation</Company>
     <Description>A convient wrapper for using the US Postal Service APIs in a .NET environment.</Description>
@@ -17,7 +17,7 @@
     <RepositoryUrl>git@github.com:MeyerCorporation/Usps.Core.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>USPS API SDK</PackageTags>
-    <PackageReleaseNotes>Functionality for Address APIs brought into .NET 5 NuGet package (Still in preview)</PackageReleaseNotes>
+    <PackageReleaseNotes>Functionality for Address APIs brought into .NET Core 3.1 NuGet package (Still in preview)</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
