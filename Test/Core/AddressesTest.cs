@@ -126,7 +126,7 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Equal("AABB", result.DPVFootnotes.Raw);
 			Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
-			Assert.Null(result.Footnotes);
+			Assert.Equal("(N/A)", result.Footnotes.ToString());
 			Assert.Equal("CA", result.State);
 			Assert.Null(result.Urbanization);
 			Assert.False(result.Vacant);
@@ -186,11 +186,11 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Null(result.CityAbbreviation);
 			Assert.Equal("01", result.DeliveryPoint);
 			Assert.False(result.DPVCMRA);
-			//Assert.True(result.DPVConfirmation);
+			Assert.Equal("Y - Address was DPV confirmed for both primary and (if present) secondary numbers.", result.DPVConfirmation.ToString());
 			Assert.Equal("AABB", result.DPVFootnotes.Raw);
 			Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
-			Assert.Null(result.Footnotes);
+			Assert.Equal("(N/A)", result.Footnotes.ToString());
 			Assert.Equal("CA", result.State);
 			Assert.Null(result.Urbanization);
 			Assert.False(result.Vacant);

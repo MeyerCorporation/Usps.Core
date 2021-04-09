@@ -7,17 +7,12 @@ namespace MeyerCorp.Usps.Core.Models
 	/// <summary>
 	/// Validation footnotes
 	/// </summary>
-	public class AddressValidationFootnotes
+	public class AddressValidationFootnotes : Footnotes
 	{
-		/// <summary>
-		/// String as returned from the USPS API
-		/// </summary>
-		public string Raw { get; set; }
-
 		/// <summary>
 		/// Collection of the notes returned with their corresponding definitions
 		/// </summary>
-		public IEnumerable<EnumerationDefinition> Enumerations
+		public override IEnumerable<EnumerationDefinition> Enumerations
 		{
 			get
 			{
@@ -47,7 +42,9 @@ namespace MeyerCorp.Usps.Core.Models
 
 		public override string ToString()
 		{
-			return String.Join(Environment.NewLine, Enumerations);
+			return String.IsNullOrWhiteSpace(Raw)
+				? "(N/A)"
+				: String.Join(Environment.NewLine, Enumerations);
 		}
 
 		private string GetDescription(char enumeration)

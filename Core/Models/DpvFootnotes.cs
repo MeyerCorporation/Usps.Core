@@ -8,17 +8,12 @@ namespace MeyerCorp.Usps.Core.Models
 	/// DPV® Standardized Footnotes - EZ24x7Plus and Mail*STAR are required to express DPV results using USPS standard two character footnotes. 
 	/// Example: AABB
 	/// </summary>
-	public class DpvFootnotes
+	public class DpvFootnotes:Footnotes
 	{
-		/// <summary>
-		/// String as returned from the USPS API
-		/// </summary>
-		public string Raw { get; set; }
-
 		/// <summary>
 		/// Collection of the notes returned with their corresponding definitions
 		/// </summary>
-		public IEnumerable<EnumerationDefinition> Enumerations
+		public override IEnumerable<EnumerationDefinition> Enumerations
 		{
 			get
 			{
@@ -41,7 +36,9 @@ namespace MeyerCorp.Usps.Core.Models
 
 		public override string ToString()
 		{
-			return String.Join(Environment.NewLine, Enumerations);
+			return String.IsNullOrWhiteSpace(Raw)
+				? "(N/A)"
+				: String.Join(Environment.NewLine, Enumerations);
 		}
 
 		private string GetDescription(string enumeration)

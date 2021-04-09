@@ -7,17 +7,12 @@ namespace MeyerCorp.Usps.Core.Models
 	/// <summary>
 	/// The DPV Confirmation Indicator is the primary method used by the USPS to determine whether an address was considered deliverable or undeliverable.
 	/// </summary>
-	public class DpvConfirmation
+	public class DpvConfirmation : Footnotes
 	{
-		/// <summary>
-		/// String as returned from the USPS API
-		/// </summary>
-		public string Raw { get; set; }
-
 		/// <summary>
 		/// Collection of the notes returned with their corresponding definitions
 		/// </summary>
-		public IEnumerable<EnumerationDefinition> Enumerations
+		public override IEnumerable<EnumerationDefinition> Enumerations
 		{
 			get
 			{
@@ -33,7 +28,9 @@ namespace MeyerCorp.Usps.Core.Models
 
 		public override string ToString()
 		{
-			return String.Join(Environment.NewLine, Enumerations);
+			return String.IsNullOrWhiteSpace(Raw)
+				? "(N/A)"
+				: String.Join(Environment.NewLine, Enumerations);
 		}
 
 		private string GetDescription(char enumeration)
