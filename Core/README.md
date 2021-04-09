@@ -1,8 +1,10 @@
-﻿# MeyerCorp.Usps.Core
+﻿<img alt="Meyer Corporation Logo" src="https://lemon-river-09725971e.azurestaticapps.net/images/Meyer.jpg" width="400" />
 
-The MeyerCorp.Usps.Core assembly is a code lbrary for .NET Core 3.1 which is acts as a software development kit for other .NET assemblies allowing a more convenient access to the [Internet API from the US Postal Service](https://www.usps.com/business/web-tools-apis/documentation-updates.htm). The Core library is distributed as a NuGet package and is referenced directly by other assembly projects in this repository.
+# MeyerCorp.Usps.Core
 
-The USPS APIs don't follow standards of either REST or SOAP but instead pass XML elements as a query argument of a HTTP GET command. It's purpose is to map .NET POCO objects to XML elements and URL routes required and returned by the USPS API. It also adds more descriptions to certain character codes which are returned by the USPS API.
+The MeyerCorp.Usps.Core assembly is a code lbrary for .NET Core 3.1 which is acts as a software development kit for other .NET assemblies allowing more convenient access to the [Internet API from the US Postal Service](https://www.usps.com/business/web-tools-apis/documentation-updates.htm). The Core library is distributed as a [NuGet package](https://www.nuget.org/packages/MeyerCorp.Usps.Core) and is referenced directly by other assembly projects in this repository.
+
+The USPS APIs don't follow standards of either REST or SOAP but instead pass XML elements as a query argument of a HTTP GET command. This library's purpose is to map .NET POCO objects to XML elements and URL routes required and returned by the USPS API. It also adds more descriptions to certain character codes which are returned by the USPS API.
 
 ## Prerequisites
 
