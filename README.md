@@ -12,19 +12,23 @@ MeyerCorp.Usps uses a more traditional RESTful approach in most cases and expose
 
 The solution contains four projects allowing two main configurations for use:
 
-### API
-
-This is a .NET Core Web API which allows the product to be configured and hosted like any .NET Core web app.
-
-### ApiServerless
-
-This is a .NET Core Azure Functions project which allows the product to be hosted as an Azure Functions project.
-
-### Core
+### [Core](https://github.com/MeyerCorporation/Usps.Core/tree/dev/Core)
 
 This is a .NET Core library which contains actual translation of the REST inputs to the non-standard input of the USPS API. It also creates a NuGet package which allows the functionality to be included in other web application. This is available as a NuGet package.
 
-### Test
+### [ExampleConsole](https://github.com/MeyerCorporation/Usps.Core/tree/dev/ExampleConsole)
+
+This is a .NET Core console application which references the NuGet pagckage and shows how the basic Core library works. It is just a working sample.
+
+### [API](https://github.com/MeyerCorporation/Usps.Core/tree/dev/Api)
+
+This is a .NET Core Web API which allows the product to be configured and hosted like any .NET Core web app.
+
+### [ApiServerless](https://github.com/MeyerCorporation/Usps.Core/tree/dev/ApiServerless)
+
+This is a .NET Core Azure Functions project which allows the product to be hosted as an Azure Functions project.
+
+### [Test](https://github.com/MeyerCorporation/Usps.Core/tree/dev/Test)
 
 This is a collection of unit tests written in xunit.
 
