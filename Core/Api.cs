@@ -48,6 +48,9 @@ namespace MeyerCorp.Usps.Core
 
 		protected Uri GetUrl(string apiName, string type, string input)
 		{
+			if (String.IsNullOrWhiteSpace(UserId)) throw new InvalidOperationException("The UserId value must be configured. Check application settings.");
+			if (String.IsNullOrWhiteSpace(UserId)) throw new InvalidOperationException("The BaseUrl value must be configured. Check application settings.");
+
 			var request = new StringBuilder();
 
 			return new Uri(request

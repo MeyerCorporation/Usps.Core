@@ -22,7 +22,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Apix", "Apix\Apix.csproj", "{F4D0176D-422A-45F0-BFBE-31C4FBD68D65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiServerless", "ApiServerless\ApiServerless.csproj", "{D0B5B6BB-A6F0-4977-A6E2-A18BEF8956BB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiServerless", "ApiServerless\ApiServerless.csproj", "{D0B5B6BB-A6F0-4977-A6E2-A18BEF8956BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api", "Api\Api.csproj", "{ACCAE803-2C68-42E5-8A4F-19CB6917FE57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -58,6 +60,10 @@ Global
 		{D0B5B6BB-A6F0-4977-A6E2-A18BEF8956BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0B5B6BB-A6F0-4977-A6E2-A18BEF8956BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0B5B6BB-A6F0-4977-A6E2-A18BEF8956BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACCAE803-2C68-42E5-8A4F-19CB6917FE57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACCAE803-2C68-42E5-8A4F-19CB6917FE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACCAE803-2C68-42E5-8A4F-19CB6917FE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACCAE803-2C68-42E5-8A4F-19CB6917FE57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
