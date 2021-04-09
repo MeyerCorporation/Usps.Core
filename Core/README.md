@@ -17,27 +17,27 @@ The USPS APIs don't follow standards of either REST or SOAP but instead pass XML
     - Address Validation/Standardization
     - City & State Lookup
     - Zip Code™ Lookup
-2. ~~Tracking & Delivery Information APIs - PDF | HTM
+2. ~~Tracking & Delivery Information APIs
 Tracking~~
     - ~~Tracking by Email~~
     - ~~Proof of Delivery~~
     - ~~Tracking Proof of Delivery~~
     - ~~Return Receipt Electronic~~
-3. ~~Price Calculator APIs - PDF | HTM~~
+3. ~~Price Calculator APIs~~
     - ~~Domestic Price Calculator~~
     - ~~International Price Calculator~~
     - ~~Shipping Label APIs~~
-4. ~~eVS Domestic Labels - PDF | HTM~~
-5. ~~eVS International Labels - PDF | HTM~~
-6. ~~Scan Form - PDF | HTM~~
-7. ~~USPS Returns Labels - PDF | HTM~~
-8. ~~Package Pickup APIs - PDF | HTM~~
+4. ~~eVS Domestic Labels~~
+5. ~~eVS International Labels~~
+6. ~~Scan Form~~
+7. ~~USPS Returns Labels~~
+8. ~~Package Pickup APIs~~
     - ~~Check pickup availability~~
     - ~~Schedule a pickup~~
     - ~~Cancel a pickup request~~
     - ~~Update a pickup request~~
 9. ~~Service Standards & Commitments APIs~~
-    - ~~Domestic Mail Service Standards - PDF | HTM~~
-    - ~~Service Delivery Calculator - PDF | HTM~~
-    - ~~Sunday Holiday Availability - PDF | HTM~~
-10. ~~Hold for Pickup Facilities Lookup API - PDF | HTM~~
+    - ~~Domestic Mail Service Standards~~
+    - ~~Service Delivery Calculator~~
+    - ~~Sunday Holiday Availability~~
+10. ~~Hold for Pickup Facilities Lookup API~~
