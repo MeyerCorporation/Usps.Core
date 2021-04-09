@@ -38,6 +38,9 @@ namespace MeyerCorp.Usps.Example
 							case "1":
 								await ValidateAddressAsync();
 								break;
+							case "2":
+								await LookupCityStateAsync();
+								break;
 							case "99":
 								foreach (var node in Process.GetProcessesByName("ExampleConsole"))
 									node.Kill();
@@ -74,6 +77,8 @@ namespace MeyerCorp.Usps.Example
 			}
 		}
 
+		#region Validation
+
 		private static async Task ValidateAddressAsync()
 		{
 			var configuration = GetConfiguration();
@@ -92,38 +97,6 @@ namespace MeyerCorp.Usps.Example
 			Print(results);
 		}
 
-		private static void Print(IEnumerable<Core.Models.Address> results)
-		{
-			Console.WriteLine("Survey says!");
-			Console.WriteLine();
-
-			foreach (var result in results)
-			{
-				Console.WriteLine($"Address #{result.Id}:");
-				Console.WriteLine($"Address 1: {result.Address1}");
-				Console.WriteLine($"Address 2: {result.Address2}");
-				Console.WriteLine($"City: {result.City}");
-				Console.WriteLine($"State: {result.State}");
-				Console.WriteLine($"Zip 5: {result.Zip5}");
-				Console.WriteLine($"Zip 4: {result.Zip4}");
-				Console.WriteLine($"Urbanization: {result.Urbanization}");
-				Console.WriteLine($"Address 2 (abbr): {result.Address2Abbreviation}");
-				Console.WriteLine($"City (abbr): {result.CityAbbreviation}");
-				Console.WriteLine($"Is a Business:{result.Business}");
-				Console.WriteLine($"Carrier Route: {result.CarrierRoute}");
-				Console.WriteLine($"Central Delivery Point: {result.CentralDeliveryPoint}");
-				Console.WriteLine($"Delivery Point: {result.DeliveryPoint}");
-				Console.WriteLine($"DPVCRMA: {result.DPVCMRA}");
-				Console.WriteLine($"DPV Confirmation: {result.DPVConfirmation}");
-				Console.WriteLine($"DPV Footnotes: {result.DPVFootnotes}");
-				Console.WriteLine($"Error: {result.Error}");
-				Console.WriteLine($"Firm Name: {result.FirmName}");
-				Console.WriteLine($"FootNotes: {result.Footnotes}");
-				Console.WriteLine($"Is Vacant: {result.Vacant}");
-				Console.WriteLine();
-			}
-		}
-
 		private static IEnumerable<Address> GetAddressesToValidate()
 		{
 			var output = new List<Address>();
@@ -134,19 +107,13 @@ namespace MeyerCorp.Usps.Example
 			while (!exit && index < 6)
 				exit = GetAddressesToValidate(output, index++);
 
-
 			return output;
 		}
 
 		private static bool GetAddressesToValidate(List<Address> output, int index)
 		{
-			Console.WriteLine();
-			Console.ForegroundColor = ConsoleColor.Yellow;
-			Console.WriteLine("Press 'ENTER' to add an address or just enter '^^' to indicate that you are ready to run the validation.");
-			Console.ForegroundColor = ConsoleColor.White;
-			if (Console.ReadLine().Equals("^^")) 
+			if (AskWhetherReadyToRun())
 				return true;
-
 			//var numberword = index switch
 			//{
 			//	1 => "first",
@@ -187,6 +154,122 @@ namespace MeyerCorp.Usps.Example
 			});
 
 			return false;
+		}
+
+		private static void Print(IEnumerable<Core.Models.Address> results)
+		{
+			Console.WriteLine("Survey says!");
+			Console.WriteLine();
+
+			foreach (var result in results)
+			{
+				Console.WriteLine($"Address #{result.Id}:");
+				Console.WriteLine($"Address 1: {result.Address1}");
+				Console.WriteLine($"Address 2: {result.Address2}");
+				Console.WriteLine($"City: {result.City}");
+				Console.WriteLine($"State: {result.State}");
+				Console.WriteLine($"Zip 5: {result.Zip5}");
+				Console.WriteLine($"Zip 4: {result.Zip4}");
+				Console.WriteLine($"Urbanization: {result.Urbanization}");
+				Console.WriteLine($"Address 2 (abbr): {result.Address2Abbreviation}");
+				Console.WriteLine($"City (abbr): {result.CityAbbreviation}");
+				Console.WriteLine($"Is a Business:{result.Business}");
+				Console.WriteLine($"Carrier Route: {result.CarrierRoute}");
+				Console.WriteLine($"Central Delivery Point: {result.CentralDeliveryPoint}");
+				Console.WriteLine($"Delivery Point: {result.DeliveryPoint}");
+				Console.WriteLine($"DPVCRMA: {result.DPVCMRA}");
+				Console.WriteLine($"DPV Confirmation: {result.DPVConfirmation}");
+				Console.WriteLine($"DPV Footnotes: {result.DPVFootnotes}");
+				Console.WriteLine($"Error: {result.Error}");
+				Console.WriteLine($"Firm Name: {result.FirmName}");
+				Console.WriteLine($"FootNotes: {result.Footnotes}");
+				Console.WriteLine($"Is Vacant: {result.Vacant}");
+				Console.WriteLine();
+			}
+		}
+
+		#endregion
+
+		#region CityStateLookup
+
+		private static async Task LookupCityStateAsync()
+		{
+			var configuration = GetConfiguration();
+			var options = Options.Create(new Core.ApiOptions
+			{
+				UspsApiKey = configuration["ApiUsername"],
+				UspsBaseUrl = "https://secure.shippingapis.com/ShippingAPI.dll",
+			});
+
+			using var addresses = new Core.Addresses(options);
+
+			var citystatestovalidate = GetCityStatesToLookup();
+
+			var results = await addresses.LookupCityStateAsync(citystatestovalidate.ToArray());
+
+			Print(results);
+		}
+
+		private static void Print(IEnumerable<Core.Models.CityState> results)
+		{
+			Console.WriteLine("Survey says!");
+			Console.WriteLine();
+
+			foreach (var result in results)
+			{
+				Console.WriteLine($"Zip Code #: {result.Id}");
+				Console.WriteLine($"City: {result.City}");
+				Console.WriteLine($"State: {result.State}");
+				Console.WriteLine($"Zip 5: {result.Zip5}");
+				Console.WriteLine($"Error: {result.Error}");
+				Console.WriteLine();
+			}
+		}
+
+		private static IEnumerable<CityState> GetCityStatesToLookup()
+		{
+			var output = new List<CityState>();
+
+			var index = 1;
+			var exit = false;
+
+			while (!exit && index < 6)
+				exit = GetCityStatesToLookup(output, index++);
+
+			return output;
+		}
+
+		private static bool GetCityStatesToLookup(List<CityState> output, int index)
+		{
+			if (AskWhetherReadyToRun())
+				return true;
+
+			Console.WriteLine("Enter Zip Code:");
+			var zipcode = Console.ReadLine();
+
+			output.Add(new CityState
+			{
+				Id = index,
+				Zip5 = zipcode,
+			});
+
+			return false;
+		}
+
+		#endregion
+
+		#region ZipCodeLookup
+
+		#endregion
+
+		private static bool AskWhetherReadyToRun()
+		{
+			Console.WriteLine();
+			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("Press 'ENTER' to add an entry or just enter '^^' to indicate that you are ready to run the validation.");
+			Console.ForegroundColor = ConsoleColor.White;
+
+			return Console.ReadLine().Equals("^^");
 		}
 
 		/// <summary>

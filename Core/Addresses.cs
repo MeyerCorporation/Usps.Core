@@ -81,11 +81,11 @@ namespace MeyerCorp.Usps.Core
 		/// The ZipCodeLookup API, which returns the ZIP Code and ZIP Code + 4 corresponding to the given address, city, and state (use USPS state abbreviations). The ZipCodeLookup API processes up to five lookups per request.
 		/// </summary>
 		/// <returns></returns>
-		public async Task<IEnumerable<Models.ZipCode>> LookupZipCodeAsync(params Xml.ZipCode[] addresses)
+		public async Task<IEnumerable<Models.ZipCode>> LookupZipCodeAsync(params Xml.ZipCode[] zipCodes)
 		{
 			var xmlrequest = new ZipCodeLookupRequest
 			{
-				Addresses = addresses,
+				Addresses = zipCodes,
 			};
 
 			Request.RequestUri = GetUrl("ZipCodeLookup", "ZipCodeLookupRequest", xmlrequest.ToString());
@@ -123,19 +123,11 @@ namespace MeyerCorp.Usps.Core
 		/// City/State Lookup API returns the city and state corresponding to the given ZIP Code. The CityStateLookup API processes up to five lookups per request.
 		/// </summary>
 		/// <returns></returns>
-		public async Task<IEnumerable<Models.CityState>> LookupCityStateAsync(string zip51,
-			string zip52 = null,
-			string zip53 = null,
-			string zip54 = null,
-			string zip55 = null)
+		public async Task<IEnumerable<Models.CityState>> LookupCityStateAsync(params Xml.CityState[] cityStates)
 		{
 			var xmlrequest = new LookupCityStateRequest
 			{
-				Zip51 = zip51,
-				Zip52 = zip52,
-				Zip53 = zip53,
-				Zip54 = zip54,
-				Zip55 = zip55,
+				CityStates = cityStates,
 			};
 
 			Request.RequestUri = GetUrl("CityStateLookup", "CityStateLookupRequest", xmlrequest.ToString());
@@ -152,37 +144,16 @@ namespace MeyerCorp.Usps.Core
 
 		private class LookupCityStateRequest
 		{
-			public string Zip51 { get; set; }
-			public string Zip52 { get; set; }
-			public string Zip53 { get; set; }
-			public string Zip54 { get; set; }
-			public string Zip55 { get; set; }
+			public Xml.CityState[] CityStates { get; set; }
 
 			public override string ToString()
 			{
-				var index = 0;
-				var xml = new Xml.CityState[]
-				{
-					GetCityState(Zip51, index++),
-					GetCityState(Zip52, index++),
-					GetCityState(Zip53, index++),
-					GetCityState(Zip54, index++),
-					GetCityState(Zip55, index++),
-				}
-				.Where(i => i != null);
+				var request = new StringBuilder();
 
-				return String.Join(String.Empty, xml);
-			}
+				foreach (var citystate in CityStates.Where(i => i != null))
+					request.Append(citystate.ToString());
 
-			static Xml.CityState GetCityState(string zip, int index)
-			{
-				return String.IsNullOrWhiteSpace(zip)
-					? null
-					: new Xml.CityState
-					{
-						Zip5 = zip,
-						Id = index,
-					};
+				return request.ToString();
 			}
 		}
 

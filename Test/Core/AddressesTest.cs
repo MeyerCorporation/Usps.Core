@@ -209,7 +209,17 @@ namespace Meyer.UspsCore.Test.Core
 
 			var addresses = new Addresses(options);
 
-			var results = await addresses.LookupCityStateAsync("95687", "95127");
+			var results = await addresses.LookupCityStateAsync(
+				new UspsXml.CityState
+				{
+					Zip5 = "95687",
+					Id = 1,
+				},
+				new UspsXml.CityState
+				{
+					Zip5 = "95127",
+					Id = 1,
+				});
 
 			Assert.Equal(2, results.Count());
 			Assert.Equal("VACAVILLE", results.First().City);
