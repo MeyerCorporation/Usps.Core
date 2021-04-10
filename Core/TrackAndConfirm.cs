@@ -11,20 +11,20 @@ namespace MeyerCorp.Usps.Core
     public class TrackAndConfirm : Api, ITrackAndConfirm
     {
         public TrackAndConfirm(IOptions<ApiOptions> options) : base(options) { }
+
         /// <summary>
         /// Four service APIs are offered in conjunction with �Revision=1� of the Package Tracking �Fields� API: Track and Confirm by Email, Proof of Delivery, Tracking Proof of Delivery, and Return Receipt Electronic. The response data from Track/Confirm Fields request determines which services are available for a tracking ID. Each request input to the Web Tools server for the tracking service APIs is limited to one tracking ID. These APIs require additional permissions from the WebTools Program Office in order to gain access. When you request access for these APIs, please identify your anticipated API volume, mailer ID, and how you will be utilizing this API. A mailer identification number (MID) is a 6 or 9-digit number assigned to a customer through the USPS Business Customer Gateway (BCG). Please refer to the following links for help:
         /// <seealso cref="https://gateway.usps.com/eAdmin/view/knowledge?securityId=MID"/>
         /// <seealso cref="https://postalpro.usps.com/mailing/mailer-id"/>
         /// </summary>
         /// <returns></returns>
-        public async Task<object> TrackAsync(params string[] trackingIds)
+        public async Task<object> TrackAsync(params Xml.TrackID[] trackingIds)
         {
             var xmlrequest = new StringBuilder();
 
-            foreach (var trackingid in trackingIds)
-                xmlrequest.AppendXml("TrackID", null, "ID", trackingid);
+            var request = String.Join(String.Empty, trackingIds.Select(ti=>ti.ToString()));
 
-            Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", xmlrequest.ToString());
+            Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", request);
 
             var response = await GetResponseStringAsync();
 

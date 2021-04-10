@@ -1,6 +1,4 @@
 ﻿using MeyerCorp.Usps.Core;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,30 +7,12 @@ using UspsXml = MeyerCorp.Usps.Core.Xml;
 
 namespace Meyer.UspsCore.Test.Core
 {
-	public class AddressesTest
+    public class AddressesTest:Meyer.UspsCore.Test.Core.Test
 	{
-		IConfiguration Configuration { get; set; }
-
-		const string BaseUrl = "https://secure.shippingapis.com/ShippingAPI.dll";
-
-		public AddressesTest()
-		{
-			var builder = new ConfigurationBuilder()
-				.AddUserSecrets<AddressesTest>();
-
-			Configuration = builder.Build();
-		}
-
 		[Fact(DisplayName = "Invalid Zip Code")]
 		public async Task Test1Async()
 		{
-			var options = Options.Create(new ApiOptions
-			{
-				UspsApiKey = Configuration["ApiUsername"],
-				UspsBaseUrl = BaseUrl,
-			});
-
-			var addresses = new Addresses(options);
+			var addresses = new Addresses(ApiOptions);
 
 			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => addresses.ValidateAsync(1, new UspsXml.Address[]
 			{
@@ -56,13 +36,7 @@ namespace Meyer.UspsCore.Test.Core
 		[Fact(DisplayName = "Address Not Found")]
 		public async Task Test2Async()
 		{
-			var options = Options.Create(new ApiOptions
-			{
-				UspsApiKey = Configuration["ApiUsername"],
-				UspsBaseUrl = BaseUrl,
-			});
-
-			var addresses = new Addresses(options);
+			var addresses = new Addresses(ApiOptions);
 
 			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => addresses.ValidateAsync(1, new UspsXml.Address[]
 				 {
@@ -86,13 +60,7 @@ namespace Meyer.UspsCore.Test.Core
 		[Fact(DisplayName = "Single Address")]
 		public async Task Test3Async()
 		{
-			var options = Options.Create(new ApiOptions
-			{
-				UspsApiKey = Configuration["ApiUsername"],
-				UspsBaseUrl = BaseUrl,
-			});
-
-			var addresses = new Addresses(options);
+			var addresses = new Addresses(ApiOptions);
 
 			var results = await addresses.ValidateAsync(1, new UspsXml.Address[]
 			{
@@ -137,13 +105,7 @@ namespace Meyer.UspsCore.Test.Core
 		[Fact(DisplayName = "Double Address")]
 		public async Task Test4Async()
 		{
-			var options = Options.Create(new ApiOptions
-			{
-				UspsApiKey = Configuration["ApiUsername"],
-				UspsBaseUrl = BaseUrl,
-			});
-
-			var addresses = new Addresses(options);
+			var addresses = new Addresses(ApiOptions);
 
 			var results = await addresses.ValidateAsync(1, new UspsXml.Address[]
 			{
@@ -201,13 +163,7 @@ namespace Meyer.UspsCore.Test.Core
 		[Fact(DisplayName = "Double City State Lookup")]
 		public async Task Test5Async()
 		{
-			var options = Options.Create(new ApiOptions
-			{
-				UspsApiKey = Configuration["ApiUsername"],
-				UspsBaseUrl = BaseUrl,
-			});
-
-			var addresses = new Addresses(options);
+			var addresses = new Addresses(ApiOptions);
 
 			var results = await addresses.LookupCityStateAsync(
 				new UspsXml.CityState
@@ -231,13 +187,7 @@ namespace Meyer.UspsCore.Test.Core
 		[Fact(DisplayName = "Double Zip Code Lookup")]
 		public async Task Test6Async()
 		{
-			var options = Options.Create(new ApiOptions
-			{
-				UspsApiKey = Configuration["ApiUsername"],
-				UspsBaseUrl = BaseUrl,
-			});
-
-			var addresses = new Addresses(options);
+			var addresses = new Addresses(ApiOptions);
 
 			var results = await addresses.LookupZipCodeAsync(new UspsXml.ZipCode[]
 			{

@@ -20,7 +20,6 @@ namespace MeyerCorp.Usps.Core
 
 		protected string UserId { get; set; }
 		protected string BaseUrl { get; set; }
-		protected string Path { get; set; }
 		protected HttpClient HttpClient { get; set; } = new HttpClient();
 		protected HttpRequestMessage Request { get; set; } = new HttpRequestMessage();
 		private bool disposedValue;
@@ -49,12 +48,12 @@ namespace MeyerCorp.Usps.Core
 		protected Uri GetUrl(string apiName, string type, string input)
 		{
 			if (String.IsNullOrWhiteSpace(UserId)) throw new InvalidOperationException("The UserId value must be configured. Check application settings.");
-			if (String.IsNullOrWhiteSpace(UserId)) throw new InvalidOperationException("The BaseUrl value must be configured. Check application settings.");
+			if (String.IsNullOrWhiteSpace(BaseUrl)) throw new InvalidOperationException("The BaseUrl value must be configured. Check application settings.");
 
 			var request = new StringBuilder();
 
 			return new Uri(request
-				.Append($"{BaseUrl}/{Path}?API={apiName}&XML=")
+				.Append($"{BaseUrl}/?API={apiName}&XML=")
 				.AppendXml(type, input, "USERID", UserId)
 				.ToString());
 		}
