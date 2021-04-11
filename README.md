@@ -10,7 +10,7 @@ MeyerCorp.Usps uses a more traditional RESTful approach in most cases and expose
 
 ## Architecture
 
-The solution contains four projects allowing two main configurations for use:
+The solution contains five projects:
 
 ### [Core](https://github.com/MeyerCorporation/Usps.Core/tree/dev/Core)
 
@@ -31,6 +31,22 @@ This is a .NET Core Azure Functions project which allows the product to be hoste
 ### [Test](https://github.com/MeyerCorporation/Usps.Core/tree/dev/Test)
 
 This is a collection of unit tests written in xunit.
+
+### Diagram
+
+<img alt="Architecture Diagram" src="https://lucid.app/publicSegments/view/b01bb3ed-97ee-41cf-92b6-24d22a803ce2/image.png" />
+
+## Installation/Application
+
+Use the various projects or just the NuGet package in the following ways:
+
+* Use the Core SDK by importing the NuGet package. This will allow easy use of the USPS API functionality in any .NET Core application.
+
+* Deploy the ApiServerless to an Azure Function project. This will allow SOA for web based projects and any other applications in your organization that can access a RESTful API (i.e. verb-based CRUD and JSON).
+
+* Deploy the Api project to either an Azure hosted AppService or an on-prem or IaaS based IIS server. This will allow you to add various forms of Oauth2 authentication/authorization.
+
+> Do not deploy as a service and allow consumers outside of your organization. If someone else in another organization needs a RESTful service, they can host their own deployment of this repository. After all, if the USPS would simply offer a RESTful-based API, this whole repo could be deprecated!
 
 ## Getting Started
 
