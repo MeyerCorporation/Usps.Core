@@ -12,19 +12,6 @@
 //{
 //	public class TrackTest
 //	{
-//		[Fact]
-//		public async Task TrackTestAsync()
-//		{
-//			var options = new Options();
-
-//			var controller = new TrackingController(options, null);
-
-//			var result = await controller.TrackAsync(trackId1: "23452345",
-//				trackId2: "3343suenodr",
-//				trackId3: null,
-//				trackId4: null,
-//				trackId5: null);
-//		}
 
 //		//[Fact]
 //		//public async Task LookupZipCodeTestAsync()
