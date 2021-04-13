@@ -7,6 +7,8 @@ namespace MeyerCorp.Usps.Core.Extensions
 	{
 		public static StringBuilder AppendXml(this StringBuilder builder, string tag, string value, params string[] attributeValuePairs)
 		{
+			if(builder==null) throw new ArgumentNullException(nameof(builder));
+			
 			if (string.IsNullOrWhiteSpace(tag))
 				throw new ArgumentException();
 			else if (attributeValuePairs.Length == 0)
