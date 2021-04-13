@@ -6,7 +6,7 @@ namespace MeyerCorp.Usps.Core.Models
 	{
 		public string Id { get; set; }
 
-		public string Error { get; set; }
+		public Error Error { get; set; }
 
 		protected static bool? ToBool(string value)
 		{

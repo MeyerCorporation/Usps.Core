@@ -57,7 +57,7 @@ namespace MeyerCorp.Usps.Core.Models
 				Address1 = addressp1,
 				Address2 = addressp2,
 				City = element.Element("City")?.Value,
-				Error = element.Element("Error")?.Value,
+				Error = Error.Parse(element.Element("Error")),
 				FirmName = element.Element("FirmName")?.Value,
 				State = element.Element("State")?.Value,
 				Zip4 = element.Element("Zip4")?.Value,
