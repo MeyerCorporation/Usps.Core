@@ -23,7 +23,6 @@
 
   <ItemGroup>
 	<ProjectReference Include="..\Core\Core.csproj" />
-	<ProjectReference Include="..\Usps\Usps.csproj" />
   </ItemGroup>
   <ItemGroup>
 	<DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="1.0.1" />

@@ -1,6 +1,5 @@
-﻿using MeyerCorp.Usps.Api.Xml;
-using System;
-using System.Diagnostics;
+﻿using System;
+using MeyerCorp.Usps.Core.Xml;
 using System.Xml.Linq;
 using Xunit;
 
