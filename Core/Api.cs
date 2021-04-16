@@ -26,23 +26,27 @@ namespace MeyerCorp.Usps.Core
 
 		protected async Task<string> GetResponseStringAsync()
 		{
-			var response = await HttpClient.SendAsync(Request);
-			var responseString = await response.Content.ReadAsStringAsync();
-
-			if (response.StatusCode == HttpStatusCode.OK)
+			try
 			{
-				if (CheckError(responseString))
+				var response = await HttpClient.SendAsync(Request);
+				var responseString = await response.Content.ReadAsStringAsync();
+
+				if (response.StatusCode == HttpStatusCode.OK)
 				{
-					var message = GetError(responseString).Trim();
-					throw new InvalidOperationException(message);
+					if (CheckError(responseString))
+					{
+						var message = GetError(responseString).Trim();
+						throw new InvalidOperationException(message);
+					}
+					else
+					{
+						return responseString;
+					}
 				}
 				else
-				{
-					return responseString;
-				}
+					throw new InvalidOperationException(responseString);
 			}
-			else
-				throw new InvalidOperationException(responseString);
+			finally { Request = new HttpRequestMessage(); }
 		}
 
 		protected Uri GetUrl(string apiName, string type, string input)

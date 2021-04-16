@@ -6,7 +6,7 @@
     <RootNamespace>MeyerCorp.Usps.Core</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.0.5-preview</Version>
+    <Version>1.0.0</Version>
     <Authors>Daniel Przybylski</Authors>
     <Company>Meyer Corporation</Company>
     <Description>A convient wrapper for using the US Postal Service APIs in a .NET environment.</Description>
@@ -17,7 +17,7 @@
     <RepositoryUrl>git@github.com:MeyerCorporation/Usps.Core.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>USPS API SDK</PackageTags>
-    <PackageReleaseNotes>Homologated City/State lookup method (Still in preview)</PackageReleaseNotes>
+    <PackageReleaseNotes>Address API is implemented.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
