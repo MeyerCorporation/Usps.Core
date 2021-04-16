@@ -1,23 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>MeyerCorp.Usps.Core</AssemblyName>
+	<TargetFramework>netstandard2.1</TargetFramework>
+	<AssemblyName>MeyerCorp.Usps.Core</AssemblyName>
     <RootNamespace>MeyerCorp.Usps.Core</RootNamespace>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>0.0.4-preview</Version>
+    <Version>1.1.0</Version>
     <Authors>Daniel Przybylski</Authors>
     <Company>Meyer Corporation</Company>
-    <Description>A convient wrapper for using the US Postal Service APIs in a .NET environment.</Description>
+    <Description>A convient wrapper for using the US Postal Service APIs in .NET and SOA environments.</Description>
     <Copyright>© 2021 Meyer Corporation</Copyright>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/MeyerCorporation/Usps.Core</PackageProjectUrl>
     <PackageIcon>Meyer M_Blue.jpg</PackageIcon>
-    <RepositoryUrl>git@github.com:MeyerCorporation/Usps.Core.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/MeyerCorporation/Usps.Core.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>USPS API SDK</PackageTags>
-    <PackageReleaseNotes>Homologated City/State lookup method (Still in preview)</PackageReleaseNotes>
+    <PackageReleaseNotes>Now based on .NET Standard 2.1.</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

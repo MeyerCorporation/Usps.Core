@@ -64,6 +64,7 @@ namespace MeyerCorp.Usps.Example
 					}
 					catch (Exception ex)
 					{
+						Console.WriteLine(ex.Message);
 						Console.ForegroundColor = ConsoleColor.Red;
 						Console.WriteLine();
 						Console.WriteLine("There's a problem with this application. Let the owner know, thx.");
