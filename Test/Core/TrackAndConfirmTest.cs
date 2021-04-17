@@ -14,7 +14,7 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
+			var ex = await Assert.ThrowsAsync<ApiException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
 			{
 				new UspsXml.TrackID
 				{
@@ -23,7 +23,9 @@ namespace Meyer.UspsCore.Test.Core
 				}
 			}));
 
-			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", ex.Message);
+			Assert.Equal("USPS API returned an error.", ex.Message);
+			Assert.IsType<MeyerCorp.Usps.Core.Models.Error>(ex.Error);
+			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", ex.Error.Description);
 		}
 
 		[Fact(DisplayName = "Track Bad Packages ID")]
@@ -31,7 +33,7 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
+			var ex = await Assert.ThrowsAsync<ApiException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
 			{
 				new UspsXml.TrackID
 				{
@@ -39,7 +41,9 @@ namespace Meyer.UspsCore.Test.Core
 				}
 			}));
 
-			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;9405 5036 9930 0333 4765 26&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The &#39; &#39; character, hexadecimal value 0x20, cannot be included in a name.", ex.Message);
+			Assert.Equal("USPS API returned an error.", ex.Message);
+			Assert.IsType<MeyerCorp.Usps.Core.Models.Error>(ex.Error);
+			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;9405 5036 9930 0333 4765 26&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The &#39; &#39; character, hexadecimal value 0x20, cannot be included in a name.", ex.Error.Description);
 		}
 
 		[Fact(DisplayName = "Track Single ID")]
@@ -65,7 +69,7 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var results = await tracking.TrackAsync(new UspsXml.TrackID[]
+			var ex = await Assert.ThrowsAsync<ApiException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
 			{
 				new UspsXml.TrackID
 				{
@@ -83,11 +87,15 @@ namespace Meyer.UspsCore.Test.Core
 				{
 					TrackId = "XXXXXXXXXXX2",
 				}
-			});
+			}));
 
-			Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", results.First().TrackSummary);
-			Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", results.First().TrackDetails.First());
-			Assert.Equal("The Postal Service could not locate the tracking information for your request. Please verify your tracking number and try again later.", results.Last().TrackSummary);
+
+			Assert.Equal("USPS API returned an error.", ex.Message);
+			Assert.IsType<MeyerCorp.Usps.Core.Models.Error>(ex.Error);
+			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", ex.Error.Description);
+			//Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", results.First().TrackSummary);
+			//Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", results.First().TrackDetails.First());
+			//Assert.Equal("The Postal Service could not locate the tracking information for your request. Please verify your tracking number and try again later.", results.Last().TrackSummary);
 		}
 	}
 }

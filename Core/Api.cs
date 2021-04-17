@@ -35,8 +35,8 @@ namespace MeyerCorp.Usps.Core
 				{
 					if (CheckError(responseString))
 					{
-						var message = GetError(responseString).Trim();
-						throw new InvalidOperationException(message);
+						var error = Models.Error.Parse(XElement.Parse(responseString));
+						throw new ApiException(error);
 					}
 					else
 					{
@@ -68,16 +68,6 @@ namespace MeyerCorp.Usps.Core
 				.Parse(responseString)
 				.DescendantsAndSelf("Error")
 				.Any();
-		}
-
-		protected static string GetError(string responseString)
-		{
-			return XElement
-				.Parse(responseString)
-				.DescendantsAndSelf("Error")
-				.First()
-				.Element("Description")
-				.Value;
 		}
 
 		protected virtual void Dispose(bool disposing)
