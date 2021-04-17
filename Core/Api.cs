@@ -32,17 +32,7 @@ namespace MeyerCorp.Usps.Core
 				var responseString = await response.Content.ReadAsStringAsync();
 
 				if (response.StatusCode == HttpStatusCode.OK)
-				{
-					if (CheckError(responseString))
-					{
-						var error = Models.Error.Parse(XElement.Parse(responseString));
-						throw new ApiException(error);
-					}
-					else
-					{
-						return responseString;
-					}
-				}
+					return responseString;
 				else
 					throw new InvalidOperationException(responseString);
 			}

@@ -7,14 +7,14 @@ using UspsXml = MeyerCorp.Usps.Core.Xml;
 
 namespace Meyer.UspsCore.Test.Core
 {
-    public class AddressesTest:Meyer.UspsCore.Test.Core.Test
+	public class AddressesTest : Meyer.UspsCore.Test.Core.Test
 	{
 		[Fact(DisplayName = "Invalid Zip Code")]
 		public async Task Test1Async()
 		{
 			var addresses = new Addresses(ApiOptions);
 
-			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => addresses.ValidateAsync(1, new UspsXml.Address[]
+			var results =  await addresses.ValidateAsync(1, new UspsXml.Address[]
 			{
 				new UspsXml.Address
 				{
@@ -28,9 +28,11 @@ namespace Meyer.UspsCore.Test.Core
 					Zip4 = "9999",
 					Zip5 = "00000",
 				}
-			}));
+			});
 
-			Assert.Equal("Invalid Zip Code.", ex.Message);
+			Assert.Single(results);
+			Assert.NotNull(results.First().Error);
+			Assert.Equal("Invalid Zip Code.  ", results.First().Error.Description);
 		}
 
 		[Fact(DisplayName = "Address Not Found")]
@@ -38,8 +40,8 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var addresses = new Addresses(ApiOptions);
 
-			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => addresses.ValidateAsync(1, new UspsXml.Address[]
-				 {
+			var result = await addresses.ValidateAsync(1, new UspsXml.Address[]
+			{
 				new UspsXml.Address
 				{
 					Address1 = "address1",
@@ -52,9 +54,10 @@ namespace Meyer.UspsCore.Test.Core
 					//Zip4 = "9999",
 					Zip5 = "95687",
 				}
-				 }));
+			});
 
-			Assert.Equal("Address Not Found.", ex.Message);
+			Assert.NotNull(result.First().Error);
+			Assert.Equal("Address Not Found.  ", result.First().Error.Description);
 		}
 
 		[Fact(DisplayName = "Single Address")]
@@ -92,7 +95,7 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.False(result.DPVCMRA);
 			//Assert.True(result.DPVConfirmation);
 			Assert.Equal("AABB", result.DPVFootnotes.Raw);
-			Assert.Null(result.Error);
+			//Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
 			Assert.Equal("(N/A)", result.Footnotes.ToString());
 			Assert.Equal("CA", result.State);
@@ -150,7 +153,7 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.False(result.DPVCMRA);
 			Assert.Equal("Y - Address was DPV confirmed for both primary and (if present) secondary numbers.", result.DPVConfirmation.ToString());
 			Assert.Equal("AABB", result.DPVFootnotes.Raw);
-			Assert.Null(result.Error);
+			//Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
 			Assert.Equal("(N/A)", result.Footnotes.ToString());
 			Assert.Equal("CA", result.State);
@@ -224,7 +227,7 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Null(result.Address1);
 			Assert.Equal("2001 MEYER WAY", result.Address2);
 			Assert.Equal("FAIRFIELD", result.City);
-			Assert.Null(result.Error);
+			//Assert.Null(result.Error);
 			Assert.Null(result.FirmName);
 			Assert.Equal("CA", result.State);
 			Assert.Equal("6802", result.Zip4);

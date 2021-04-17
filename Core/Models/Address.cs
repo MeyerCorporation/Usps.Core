@@ -140,5 +140,7 @@ namespace MeyerCorp.Usps.Core.Models
 		/// 
 		/// </summary>
 		public string Urbanization { get; set; }
+
+		public Error Error { get; set; }
 	}
 }

@@ -13,7 +13,7 @@ namespace MeyerCorp.Usps.Core.Models
             return new CityState
             {
                 City = element.Element("City")?.Value,
-                Error = Error.Parse(element.Element("Error")),
+                //Error = Error.Parse(element.Element("Error")),
                 Zip5 = element.Element("Zip5")?.Value,
                 State = element.Element("State")?.Value,
                 Id = element.Element("ID")?.Value,

@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace MeyerCorp.Usps.Core.Models
 {
-	public class Error
+	public class Error : Model
 	{
 		public int Number { get; set; }
 		public string Description { get; set; }

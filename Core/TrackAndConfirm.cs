@@ -31,10 +31,14 @@ namespace MeyerCorp.Usps.Core
 
 			var document = XDocument.Parse(response);
 
-			return document
+			var output = new List<Models.TrackingInformation>();
+
+			output.AddRange(document
 				.Root
 				.Elements("TrackInfo")
-				.Select(e => Models.TrackingInformation.Parse(e));
+				.Select(e => Models.TrackingInformation.Parse(e)));
+
+			return output;
 		}
 
 		/// <summary>
