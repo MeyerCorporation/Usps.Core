@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TrackResponse>
+  <TrackInfo ID="9405503699300333476526">
+	<Class>Priority Mail&lt;SUP&gt;&amp;reg;&lt;/SUP&gt;</Class>
+	<ClassOfMailCode>PM</ClassOfMailCode>
+	<DestinationCity>ORLANDO</DestinationCity>
+	<DestinationState>FL</DestinationState>
+	<DestinationZip>32832</DestinationZip>
+	<EmailEnabled>true</EmailEnabled>
+	<KahalaIndicator>false</KahalaIndicator>
+	<MailTypeCode>DM</MailTypeCode>
+	<MPDATE>2021-04-01 21:50:29.000000</MPDATE>
+	<MPSUFFIX>630159520</MPSUFFIX>
+	<OriginCity>VACAVILLE</OriginCity>
+	<OriginState>CA</OriginState>
+	<OriginZip>95687</OriginZip>
+	<PodEnabled>false</PodEnabled>
+	<TPodEnabled>false</TPodEnabled>
+	<RestoreEnabled>false</RestoreEnabled>
+	<RramEnabled>false</RramEnabled>
+	<RreEnabled>false</RreEnabled>
+	<Service>USPS Tracking&lt;SUP&gt;&amp;#174;&lt;/SUP&gt;</Service>
+	<Service>Up to $50 insurance included</Service>
+	<ServiceTypeCode>055</ServiceTypeCode>
+	<Status>Delivered, Parcel Locker</Status>
+	<StatusCategory>Delivered</StatusCategory>
+	<StatusSummary>Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.</StatusSummary>
+	<TABLECODE>T</TABLECODE>
+	<TrackSummary>
+	  <EventTime>10:45 am</EventTime>
+	  <EventDate>April 6, 2021</EventDate>
+	  <Event>Delivered, Parcel Locker</Event>
+	  <EventCity>ORLANDO</EventCity>
+	  <EventState>FL</EventState>
+	  <EventZIPCode>32832</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>01</EventCode>
+	  <DeliveryAttributeCode>03</DeliveryAttributeCode>
+	</TrackSummary>
+	<TrackDetail>
+	  <EventTime>7:51 am</EventTime>
+	  <EventDate>April 6, 2021</EventDate>
+	  <Event>Out for Delivery</Event>
+	  <EventCity>ORLANDO</EventCity>
+	  <EventState>FL</EventState>
+	  <EventZIPCode>32832</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>OF</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>7:40 am</EventTime>
+	  <EventDate>April 6, 2021</EventDate>
+	  <Event>Arrived at Post Office</Event>
+	  <EventCity>ORLANDO</EventCity>
+	  <EventState>FL</EventState>
+	  <EventZIPCode>32822</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>07</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>8:55 am</EventTime>
+	  <EventDate>April 5, 2021</EventDate>
+	  <Event>Departed USPS Destination Facility</Event>
+	  <EventCity>ORLANDO</EventCity>
+	  <EventState>FL</EventState>
+	  <EventZIPCode>32822</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>10</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>8:55 am</EventTime>
+	  <EventDate>April 5, 2021</EventDate>
+	  <Event>Arrived at USPS Facility</Event>
+	  <EventCity>ORLANDO</EventCity>
+	  <EventState>FL</EventState>
+	  <EventZIPCode>32822</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>08</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>6:10 am</EventTime>
+	  <EventDate>April 5, 2021</EventDate>
+	  <Event>Out for Delivery</Event>
+	  <EventCity>ORLANDO</EventCity>
+	  <EventState>FL</EventState>
+	  <EventZIPCode>32832</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>OF</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime />
+	  <EventDate>April 4, 2021</EventDate>
+	  <Event>In Transit to Next Facility</Event>
+	  <EventCity />
+	  <EventState />
+	  <EventZIPCode />
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>NT</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>7:41 pm</EventTime>
+	  <EventDate>April 1, 2021</EventDate>
+	  <Event>Departed USPS Regional Origin Facility</Event>
+	  <EventCity>SACRAMENTO CA DISTRIBUTION CENTER</EventCity>
+	  <EventState />
+	  <EventZIPCode />
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>10</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>7:41 pm</EventTime>
+	  <EventDate>April 1, 2021</EventDate>
+	  <Event>Arrived at USPS Regional Origin Facility</Event>
+	  <EventCity>SACRAMENTO CA DISTRIBUTION CENTER</EventCity>
+	  <EventState />
+	  <EventZIPCode />
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>10</EventCode>
+	</TrackDetail>
+	<TrackDetail>
+	  <EventTime>6:26 pm</EventTime>
+	  <EventDate>April 1, 2021</EventDate>
+	  <Event>Accepted at USPS Origin Facility</Event>
+	  <EventCity>VACAVILLE</EventCity>
+	  <EventState>CA</EventState>
+	  <EventZIPCode>95687</EventZIPCode>
+	  <EventCountry />
+	  <FirmName />
+	  <Name />
+	  <AuthorizedAgent>false</AuthorizedAgent>
+	  <EventCode>OA</EventCode>
+	</TrackDetail>
+  </TrackInfo>
+  <TrackInfo ID="9405503699300050852016">
+	<Error>
+	  <Number>-2147219283</Number>
+	  <Description>A status update is not yet available on your Priority Mail&lt;SUP&gt;&amp;reg;&lt;/SUP&gt; package. It will be available when the shipper provides an update or the package is delivered to USPS. Check back soon. Sign up for Informed Delivery&lt;SUP&gt;&amp;reg;&lt;/SUP&gt; to receive notifications for packages addressed to you.</Description>
+	  <HelpFile />
+	  <HelpContext />
+	</Error>
+  </TrackInfo>
+  <TrackInfo ID="9405803699300034770504">
+	<Error>
+	  <Number>-2147219283</Number>
+	  <Description>A status update is not yet available on your Priority Mail&lt;SUP&gt;&amp;reg;&lt;/SUP&gt; package. It will be available when the shipper provides an update or the package is delivered to USPS. Check back soon. Sign up for Informed Delivery&lt;SUP&gt;&amp;reg;&lt;/SUP&gt; to receive notifications for packages addressed to you.</Description>
+	  <HelpFile />
+	  <HelpContext />
+	</Error>
+  </TrackInfo>
+  <TrackInfo ID="XXXXXXXXXXX2">
+	<Error>
+	  <Number>-2147219302</Number>
+	  <Description>The tracking number may be incorrect or the status update is not yet available. Please verify your tracking number and try again later.</Description>
+	  <HelpFile />
+	  <HelpContext />
+	</Error>
+  </TrackInfo>
+</TrackResponse>

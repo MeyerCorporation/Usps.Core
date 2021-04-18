@@ -115,7 +115,7 @@ namespace MeyerCorp.Usps.Core
 				request.AppendXml("ClientIp", ClientIp.ToString());
 				request.AppendXml("SourceId", SourceId.ToString());
 				request.Append(String.Join(String.Empty, TrackingIds.Select(ti => $"<TrackID ID=\"{ti}\"></TrackID>")));
-				request.AppendXml("DestinationZipCode", DestinzationZipCode);
+				if (!String.IsNullOrWhiteSpace(DestinzationZipCode)) request.AppendXml("DestinationZipCode", DestinzationZipCode);
 				if (MailingDate.HasValue) request.AppendXml("MailingDate", MailingDate.ToString());
 
 				return request.ToString();
