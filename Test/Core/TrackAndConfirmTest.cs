@@ -61,7 +61,6 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", infos.First().TrackDetails.First());
 		}
 
-
 		[Fact(DisplayName = "Track double ID")]
 		public async Task Test4Async()
 		{
@@ -83,6 +82,28 @@ namespace Meyer.UspsCore.Test.Core
 			Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", list[0].TrackSummary);
 			Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", list[0].TrackDetails.First());
 			Assert.Equal("The Postal Service could not locate the tracking information for your request. Please verify your tracking number and try again later.", list[3].TrackSummary);
+		}
+
+
+		[Fact(DisplayName = "Track Fields Null ID")]
+		public async Task Test5Async()
+		{
+			var tracking = new TrackAndConfirm(ApiOptions);
+
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackByFieldsAsync(revision:1,
+				clientIp: "192.168.0.1",
+				sourceId:"Janglin Corporation",
+				destinationZipCode:null,
+				mailingDate:null,
+				new string[]
+				{
+					null,
+				}));
+
+			Assert.Equal("The USPS API returned an error.", ex.Message);
+			Assert.True(ex.Data.Contains("Error"));
+			Assert.NotNull(ex.Data["Error"] as System.Xml.Linq.XDocument);
+			Assert.Equal("Error", (ex.Data["Error"] as System.Xml.Linq.XDocument).Root.Name);
 		}
 	}
 }

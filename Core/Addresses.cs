@@ -151,6 +151,11 @@ namespace MeyerCorp.Usps.Core
 			}
 		}
 
+		internal static IEnumerable<object> Where(Func<object, bool> p)
+		{
+			throw new NotImplementedException();
+		}
+
 		#endregion
 	}
 }

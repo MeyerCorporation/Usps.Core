@@ -22,7 +22,7 @@ namespace MeyerCorp.Usps.Core
 		public async Task<IEnumerable<Models.TrackingInformation>> TrackAsync(params string[] trackingIds)
 		{
 			var xmlrequest = new StringBuilder();
-			var request = String.Join(String.Empty, trackingIds.Select(ti =>$"<TrackID ID=\"{ti}\"></TrackID>"));
+			var request = String.Join(String.Empty, trackingIds.Select(ti => $"<TrackID ID=\"{ti}\"></TrackID>"));
 
 			Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", request);
 
@@ -44,22 +44,26 @@ namespace MeyerCorp.Usps.Core
 		/// </summary>
 		/// <param name="fields"></param>
 		/// <returns></returns>
-		public async Task<IEnumerable<Models.TrackingInformationFields>> TrackByFieldsAsync(params string[] trackingIds)
+		public async Task<IEnumerable<Models.TrackingInformationFields>> TrackByFieldsAsync(int revision, string clientIp, string sourceId, string destinationZipCode, DateTime? mailingDate, params string[] trackingIds)
 		{
-			var xmlrequest = new StringBuilder();
-			var request = String.Join(String.Empty, trackingIds.Select(ti => ti.ToString()));
+			var xmlrequest = new TrackByFieldsRequest
+			{
+				Revision = revision,
+				ClientIp = clientIp,
+				SourceId = sourceId,
+				DestinzationZipCode = destinationZipCode,
+				MailingDate = mailingDate,
+				TrackingIds = trackingIds,
+			};
 
-			Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", request);
+			Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackFieldRequest", xmlrequest.ToString());
 
 			var response = await GetResponseStringAsync();
-			var output = new List<Models.TrackingInformationFields>();
 
-			output.AddRange(response
+			return response
 				.Root
-				.Elements("TrackInfo")
-				.Select(e => Models.TrackingInformationFields.Parse(e)));
-
-			return output;
+				.Elements("Address")
+				.Select(e => Models.TrackingInformationFields.Parse(e));
 		}
 
 		/// <summary>
@@ -93,5 +97,29 @@ namespace MeyerCorp.Usps.Core
 		/// </summary>
 		/// <returns></returns>
 		public object TrackProofOfDelivery() { throw new NotImplementedException(); }
+
+		private class TrackByFieldsRequest
+		{
+			public int Revision { get; internal set; }
+			public string ClientIp { get; internal set; }
+			public string SourceId { get; internal set; }
+			public string DestinzationZipCode { get; internal set; }
+			public DateTime? MailingDate { get; internal set; }
+			public string[] TrackingIds { get; internal set; }
+
+			public override string ToString()
+			{
+				var request = new StringBuilder();
+
+				request.AppendXml("Revision", Revision.ToString());
+				request.AppendXml("ClientIp", ClientIp.ToString());
+				request.AppendXml("SourceId", SourceId.ToString());
+				request.Append(String.Join(String.Empty, TrackingIds.Select(ti => $"<TrackID ID=\"{ti}\"></TrackID>")));
+				request.AppendXml("DestinationZipCode", DestinzationZipCode);
+				if (MailingDate.HasValue) request.AppendXml("MailingDate", MailingDate.ToString());
+
+				return request.ToString();
+			}
+		}
 	}
 }
