@@ -22,18 +22,14 @@ namespace MeyerCorp.Usps.Core
 		public async Task<IEnumerable<Models.TrackingInformation>> TrackAsync(params Xml.TrackID[] trackingIds)
 		{
 			var xmlrequest = new StringBuilder();
-
 			var request = String.Join(String.Empty, trackingIds.Select(ti => ti.ToString()));
 
 			Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", request);
 
 			var response = await GetResponseStringAsync();
-
-			var document = XDocument.Parse(response);
-
 			var output = new List<Models.TrackingInformation>();
 
-			output.AddRange(document
+			output.AddRange(response
 				.Root
 				.Elements("TrackInfo")
 				.Select(e => Models.TrackingInformation.Parse(e)));

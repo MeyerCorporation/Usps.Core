@@ -16,18 +16,19 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var results = await tracking.TrackAsync(new CoreXmls.TrackID[]
-			{
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new CoreXmls.TrackID[]
+		   {
 				new CoreXmls.TrackID
 				{
 					Id = 0,
 					TrackId = null,
 				}
-			});
+			}));
 
-			Assert.Single(results);
-			Assert.NotNull(results.Errors().First());
-			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", results.Errors().First().Description);
+			Assert.Equal("The USPS API returned an error.", ex.Message);
+			Assert.True(ex.Data.Contains("Error"));
+			Assert.NotNull(ex.Data["Error"] as System.Xml.Linq.XDocument);
+			Assert.Equal("Error", (ex.Data["Error"] as System.Xml.Linq.XDocument).Root.Name);
 		}
 
 		[Fact(DisplayName = "Track Bad Packages ID")]
@@ -35,17 +36,18 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var results = await tracking.TrackAsync(new CoreXmls.TrackID[]
-			{
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new CoreXmls.TrackID[]
+		   {
 				new CoreXmls.TrackID
 				{
 					TrackId = "9405 5036 9930 0333 4765 26",
 				}
-			});
+		   }));
 
-			Assert.Single(results);
-			Assert.NotNull(results.Errors().First());
-			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;9405 5036 9930 0333 4765 26&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The &#39; &#39; character, hexadecimal value 0x20, cannot be included in a name.", results.Errors().First().Description);
+			Assert.Equal("The USPS API returned an error.", ex.Message);
+			Assert.True(ex.Data.Contains("Error"));
+			Assert.NotNull(ex.Data["Error"] as System.Xml.Linq.XDocument);
+			Assert.Equal("Error", (ex.Data["Error"] as System.Xml.Linq.XDocument).Root.Name);
 		}
 
 		[Fact(DisplayName = "Track Single ID")]
@@ -98,7 +100,7 @@ namespace Meyer.UspsCore.Test.Core
 			var list = results.ToList();
 
 			Assert.Equal(4, results.Count());
-			Assert.Equal(2,results.Select(r => r.Error).Where(r=>r!=null).Count());
+			Assert.Equal(2, results.Select(r => r.Error).Where(r => r != null).Count());
 			Assert.Equal("A status update is not yet available on your Priority Mail<SUP>&reg;</SUP> package. It will be available when the shipper provides an update or the package is delivered to USPS. Check back soon. Sign up for Informed Delivery<SUP>&reg;</SUP> to receive notifications for packages addressed to you.", list[1].Error.Description);
 			Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", list[0].TrackSummary);
 			Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", list[0].TrackDetails.First());

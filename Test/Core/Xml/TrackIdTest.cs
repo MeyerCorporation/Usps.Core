@@ -22,7 +22,7 @@ namespace Meyer.UspsCore.Test.Core.Xml
 
             XElement.Parse(output.ToString());
 
-            var expected = "<TrackID ID=\"456789\"><DestinationZipCode>98745</DestinationZipCode><MailingDate>1999-10-03</MailingDate></TrackID>";
+            var expected = "<TrackID ID=\"456789\"></TrackID>";
 
             Assert.Equal(expected, output.ToString());
         }

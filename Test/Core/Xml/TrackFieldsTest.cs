@@ -6,7 +6,7 @@ namespace Meyer.UspsCore.Test.Core.Xml
 {
 	public class TrackFieldsTest
 	{
-        [Fact(DisplayName="To String")]
+		[Fact(DisplayName = "To String")]
 		public void Test0()
 		{
 			var output = new TrackFields
@@ -46,9 +46,9 @@ namespace Meyer.UspsCore.Test.Core.Xml
 
 			//XElement.Parse(output.ToString());
 
-			var expected = "<Revision>1</Revision><ClientIp>192.168.0.12</ClientIp><SourceId>source</SourceId><SourceIdZIP>96321</SourceIdZIP><TrackID ID=\"456789\"><DestinationZipCode>98745</DestinationZipCode><MailingDate>1999-10-03</MailingDate></TrackID><TrackID ID=\"256789\"><DestinationZipCode>68745</DestinationZipCode><MailingDate>2000-10-03</MailingDate></TrackID><TrackID ID=\"956789\"><DestinationZipCode>88745</DestinationZipCode><MailingDate>2001-10-03</MailingDate></TrackID>";
+			var expected = "<Revision>1</Revision><ClientIp>192.168.0.12</ClientIp><SourceId>source</SourceId><SourceIdZIP>96321</SourceIdZIP><TrackID ID=\"456789\"></TrackID><TrackID ID=\"256789\"></TrackID><TrackID ID=\"956789\"></TrackID>";
 
 			Assert.Equal(expected, output.ToString());
 		}
-		}
+	}
 }

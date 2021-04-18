@@ -46,9 +46,7 @@ namespace MeyerCorp.Usps.Core
 
 			var response = await GetResponseStringAsync();
 
-			var document = XDocument.Parse(response);
-
-			return document
+			return response
 				.Root
 				.Elements("Address")
 				.Select(e => Models.Address.Parse(e));
@@ -92,9 +90,7 @@ namespace MeyerCorp.Usps.Core
 
 			var response = await GetResponseStringAsync();
 
-			var document = XDocument.Parse(response);
-
-			return document
+			return response
 				.Root
 				.Elements("Address")
 				.Select(e => Models.ZipCode.Parse(e));
@@ -134,9 +130,7 @@ namespace MeyerCorp.Usps.Core
 
 			var response = await GetResponseStringAsync();
 
-			var document = XDocument.Parse(response);
-
-			return document
+			return response
 				.Root
 				.Elements("ZipCode")
 				.Select(e => Models.CityState.Parse(e));
