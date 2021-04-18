@@ -16,13 +16,9 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new CoreXmls.TrackID[]
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new string[]
 		   {
-				new CoreXmls.TrackID
-				{
-					Id = 0,
-					TrackId = null,
-				}
+				null,
 			}));
 
 			Assert.Equal("The USPS API returned an error.", ex.Message);
@@ -36,12 +32,9 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new CoreXmls.TrackID[]
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new string[]
 		   {
-				new CoreXmls.TrackID
-				{
-					TrackId = "9405 5036 9930 0333 4765 26",
-				}
+				"9405 5036 9930 0333 4765 26",
 		   }));
 
 			Assert.Equal("The USPS API returned an error.", ex.Message);
@@ -55,12 +48,9 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var results = await tracking.TrackAsync(new CoreXmls.TrackID[]
+			var results = await tracking.TrackAsync(new string[]
 			{
-				new CoreXmls.TrackID
-				{
-					TrackId = "9405503699300333476526",
-				}
+				"9405503699300333476526",
 			});
 
 			var infos = results.As<CoreModel.TrackingInformation>();
@@ -77,24 +67,12 @@ namespace Meyer.UspsCore.Test.Core
 		{
 			var tracking = new TrackAndConfirm(ApiOptions);
 
-			var results = await tracking.TrackAsync(new CoreXmls.TrackID[]
+			var results = await tracking.TrackAsync(new string[]
 			{
-				new CoreXmls.TrackID
-				{
-					TrackId = "9405503699300333476526",
-				},
-				new CoreXmls.TrackID
-				{
-					TrackId = "9405503699300050852016",
-				},
-				new CoreXmls.TrackID
-				{
-					TrackId = "9405803699300034770504",
-				},
-				new CoreXmls.TrackID
-				{
-					TrackId = "XXXXXXXXXXX2",
-				}
+				"9405503699300333476526",
+				"9405503699300050852016",
+				"9405803699300034770504",
+				"XXXXXXXXXXX2",
 			});
 
 			var list = results.ToList();

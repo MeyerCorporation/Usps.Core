@@ -19,10 +19,10 @@ namespace MeyerCorp.Usps.Core
 		/// <seealso cref="https://postalpro.usps.com/mailing/mailer-id"/>
 		/// </summary>
 		/// <returns></returns>
-		public async Task<IEnumerable<Models.TrackingInformation>> TrackAsync(params Xml.TrackID[] trackingIds)
+		public async Task<IEnumerable<Models.TrackingInformation>> TrackAsync(params string[] trackingIds)
 		{
 			var xmlrequest = new StringBuilder();
-			var request = String.Join(String.Empty, trackingIds.Select(ti => ti.ToString()));
+			var request = String.Join(String.Empty, trackingIds.Select(ti =>$"<TrackID ID=\"{ti}\"></TrackID>"));
 
 			Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", request);
 
@@ -44,7 +44,23 @@ namespace MeyerCorp.Usps.Core
 		/// </summary>
 		/// <param name="fields"></param>
 		/// <returns></returns>
-		public object Track(object fields) { throw new NotImplementedException(); }
+		public async Task<IEnumerable<Models.TrackingInformationFields>> TrackByFieldsAsync(params string[] trackingIds)
+		{
+			var xmlrequest = new StringBuilder();
+			var request = String.Join(String.Empty, trackingIds.Select(ti => ti.ToString()));
+
+			Request.RequestUri = GetUrl(apiName: "TrackV2", type: "TrackRequest", request);
+
+			var response = await GetResponseStringAsync();
+			var output = new List<Models.TrackingInformationFields>();
+
+			output.AddRange(response
+				.Root
+				.Elements("TrackInfo")
+				.Select(e => Models.TrackingInformationFields.Parse(e)));
+
+			return output;
+		}
 
 		/// <summary>
 		/// Track Proof of Delivery is a letter that includes the recipient's name and a copy of their signature. The Track Proof of Delivery API allows the customer to request proof of delivery notification via email. When you request access for this API, please identify your anticipated API volume, mailer ID and how you will be utilizing this API. A mailer identification number (MID) is a 6 or 9-digit number assigned to a customer through the USPS Business Customer Gateway (BCG). Please refer to the following links for help:
