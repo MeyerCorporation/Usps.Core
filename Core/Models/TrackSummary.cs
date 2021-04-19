@@ -1,27 +1,31 @@
-﻿namespace MeyerCorp.Usps.Core.Models
+﻿using System;
+using System.Xml.Linq;
+
+namespace MeyerCorp.Usps.Core.Models
 {
-	public class TrackSummary
+	public class TrackSummary : TrackDetail
 	{
 
-		//public static TrackFields[] Parse(string input)
-		//{
-		//	var parsed = XElement.Parse(input).Element("Address");
+		new public static TrackSummary Parse(XElement input)
+		{
+			return new TrackSummary
+			{
+				EventDate = input.Element("EventDate")?.Value,
+				EventTime = input.Element("EventTime")?.Value,
+				Event = input.Element("Event")?.Value,
+				EventCity = input.Element("EventCity")?.Value,
+				EventState = input.Element("EventState")?.Value,
+				EventZIPCode = input.Element("EventZIPCode")?.Value,
+				FirmName = input.Element("FirmName")?.Value,
+				Name = input.Element("Name")?.Value,
+				AuthorizedAgent = Boolean.Parse(input.Element("AuthorizedAgent").Value),
+				EventCode = input.Attribute("EventCode")?.Value,
+				ActionCode = input.Attribute("ActionCode")?.Value,
+				ReasonCode = input.Attribute("ReasonCode")?.Value,
+				DeliveryAttributeCode = input.Attribute("DeliveryAttributeCode")?.Value,
+			};
+		}
 
-		//	var addressp1 = parsed.Element("Address1")?.Value;
-		//	var addressp2 = parsed.Element("Address2")?.Value;
-
-		//	return new TrackFields
-		//	{
-		//		Address1 = addressp1,
-		//		Address2 = addressp2,
-		//		City = parsed.Element("City")?.Value,
-		//		Error = parsed.Element("Error")?.Value,
-		//		FirmName = parsed.Element("FirmName")?.Value,
-		//		State = parsed.Element("State")?.Value,
-		//		Zip4 = parsed.Element("Zip4")?.Value,
-		//		Zip5 = parsed.Element("Zip5")?.Value,
-		//		Id = parsed.Attribute("ID")?.Value,
-		//	};
-		//}
+		public string DeliveryAttributeCode { get; set; }
 	}
 }

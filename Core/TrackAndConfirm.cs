@@ -62,7 +62,7 @@ namespace MeyerCorp.Usps.Core
 
 			return response
 				.Root
-				.Elements("Address")
+				.Elements("TrackInfo")
 				.Select(e => Models.TrackingInformationFields.Parse(e));
 		}
 

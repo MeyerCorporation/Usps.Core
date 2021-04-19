@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace MeyerCorp.Usps.Core.Models
@@ -7,10 +9,67 @@ namespace MeyerCorp.Usps.Core.Models
 	{
 		public Error Error { get; set; }
 
-		internal static TrackingInformationFields Parse(XElement e)
+		internal static TrackingInformationFields Parse(XElement input)
 		{
-			throw new NotImplementedException();
+			return new TrackingInformationFields
+			{
+				Class = input.Element("Class")?.Value,
+				ClassOfMailCode = input.Element("ClassOfMailCode")?.Value,
+				DestinationCity = input.Element("DestinationCity")?.Value,
+				DestinationState = input.Element("DestinationState")?.Value,
+				DestinationZip = input.Element("DestinationZip")?.Value,
+				EmailEnabled = Boolean.Parse(input.Element("EmailEnabled").Value),
+				KahalaIndicator = Boolean.Parse(input.Element("KahalaIndicator").Value),
+				MailTypeCode = input.Element("MailTypeCode")?.Value,
+				MPDATE = DateTime.Parse(input.Element("MPDATE").Value),
+				MPSUFFIX = input.Attribute("MPSUFFIX")?.Value,
+				OriginCity = input.Attribute("OriginCity")?.Value,
+				OriginZip = input.Attribute("OriginZip")?.Value,
+				PodEnabled = ToBool(input.Attribute("PodEnabled")?.Value).Value,
+				TPodEnabled = ToBool(input.Element("TPodEnabled")?.Value).Value,
+				RestoreEnabled = ToBool(input.Element("RestoreEnabled")?.Value).Value,
+				RramEnabled = ToBool(input.Element("RramEnabled")?.Value).Value,
+				RreEnabled = input.Element("RreEnabled")?.Value,
+				Services = input.Elements("Service").Select(e => e?.Value),
+				ServiceTypeCode = input.Element("ServiceTypeCode")?.Value,
+				Status = input.Element("Status")?.Value,
+				StatusCategory = input.Element("StatusCategory")?.Value,
+				StatusSummary = input.Element("StatusSummary")?.Value,
+				TABLECODE = input.Element("TABLECODE")?.Value,
+				TrackSummary = TrackSummary.Parse(input.Element("TrackSummary")),
+			};
 		}
+
+		public string Class { get; set; }
+		public string ClassOfMailCode { get; set; }
+		public string DestinationCity { get; set; }
+		public string DestinationState { get; set; }
+		public string DestinationZip { get; set; }
+		public bool EmailEnabled { get; set; }
+		public bool KahalaIndicator { get; set; }
+		public string MailTypeCode { get; set; }
+		public DateTime MPDATE { get; set; }
+		public string MPSUFFIX { get; set; }
+		public string OriginCity { get; set; }
+		public string OriginState { get; set; }
+		public string OriginZip { get; set; }
+		public bool PodEnabled { get; set; }
+		public bool TPodEnabled { get; set; }
+		public bool RestoreEnabled { get; set; }
+		public bool RramEnabled { get; set; }
+		public string RreEnabled { get; set; }
+		public IEnumerable<string> Services { get; set; }
+		public string ServiceTypeCode { get; set; }
+		public string Status { get; set; }
+		public string StatusCategory { get; set; }
+		public string StatusSummary { get; set; }
+		public string TABLECODE { get; set; }
+		public TrackSummary TrackSummary { get; set; }
+
+		/// <summary>
+		/// Tracking Details Information.
+		/// </summary>
+		public IENumerable<TrackDetail> TrackDetails { get; set; }
 
 		/// <summary>
 		/// Guaranteed Delivery Date
@@ -21,1271 +80,1266 @@ namespace MeyerCorp.Usps.Core.Models
 		/// <summary>
 		/// Signifies if the mail piece is eSOF eligible.
 		/// </summary>
-		public bool? eSOFEligible { get; set; }
+		public bool? ESOFEligible { get; set; }
+		//		Boolean
 
-		/// <summary>
-		/// Tracking Summary Information.
-		/// </summary>
-		public IENumerable<TrackSummary> TrackSummaries { get; set; }
-//		Boolean
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail
 
-//TrackResponse / TrackInfo / TrackDetail
+		//Required once
 
-//Required once
+		//Tracking Detail Information.This group is repeatable.
 
-//Tracking Detail Information.This group is repeatable.
+		//(Group)
 
-//(Group)
 
 
+		//TrackResponse / TrackInfo / TrackDetail / EventTime
 
-//TrackResponse / TrackInfo / TrackDetail / EventTime
+		//Required
 
-//Required
+		//The time of the event.
 
-//The time of the event.
+		//String
 
-//String
 
 
+		//TrackResponse / TrackInfo / TrackDetail / EventDate
 
-//TrackResponse / TrackInfo / TrackDetail / EventDate
+		//Required
 
-//Required
+		//The date of the event.
 
-//The date of the event.
+		//String
 
-//String
 
 
+		//TrackResponse / TrackInfo / TrackDetail / Event
 
-//TrackResponse / TrackInfo / TrackDetail / Event
+		//Required
 
-//Required
+		//The event type (e.g., Enroute).
 
-//The event type (e.g., Enroute).
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / EventCity
 
-//TrackResponse / TrackInfo / TrackDetail / EventCity
+		//Required
 
-//Required
+		//The city where the event occurred.
 
-//The city where the event occurred.
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / EventState
 
-//TrackResponse / TrackInfo / TrackDetail / EventState
+		//Required
 
-//Required
+		//The state where the event occurred.
 
-//The state where the event occurred.
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / EventZIPCode
 
-//TrackResponse / TrackInfo / TrackDetail / EventZIPCode
+		//Required
 
-//Required
+		//The ZIP Code of the event
 
-//The ZIP Code of the event
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / EventCountry
 
-//TrackResponse / TrackInfo / TrackDetail / EventCountry
+		//Optional
 
-//Optional
+		//The country where the event occurred.
 
-//The country where the event occurred.
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / FirmName
 
-//TrackResponse / TrackInfo / TrackDetail / FirmName
+		//Optional
 
-//Optional
+		//The company name if delivered to a company.
 
-//The company name if delivered to a company.
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / Name
 
-//TrackResponse / TrackInfo / TrackDetail / Name
+		//Optional
 
-//Optional
+		//The name of the persons signing for delivery (if available).
 
-//The name of the persons signing for delivery (if available).
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / AuthorizedAgent
 
-//TrackResponse / TrackInfo / TrackDetail / AuthorizedAgent
+		//Optional
 
-//Optional
+		//True/False field indicating the person signing as an Authorized Agent.
 
-//True/False field indicating the person signing as an Authorized Agent.
+		//String
 
-//String
+		//Enumeration =
 
-//Enumeration =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResponse / TrackInfo / TrackDetail / EventCode
 
-//TrackResponse / TrackInfo / TrackDetail / EventCode
+		//Optional
 
-//Optional
+		//The event code
 
-//The event code
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / ActionCode
 
-//TrackResponse / TrackInfo / TrackDetail / ActionCode
+		//Optional
 
-//Optional
+		//The action code
 
-//The action code
+		//String
 
-//String
 
 
 
+		//TrackResponse / TrackInfo / TrackDetail / ReasonCode
 
-//TrackResponse / TrackInfo / TrackDetail / ReasonCode
+		//Optional
 
-//Optional
+		//The reason code
 
-//The reason code
+		//String  TrackResults/ RequestSeqNumber
 
-//String  TrackResults/ RequestSeqNumber
+		//Required max 1
 
-//Required max 1
+		//A unique identification number for a request.The same number that was provided in the request.
 
-//A unique identification number for a request.The same number that was provided in the request.
+		//For example: 122
 
-//For example: 122
+		//Integer
 
-//Integer
 
 
+		//TrackResults / TrackInfo ID
 
-//TrackResults / TrackInfo ID
+		//Required max 10
 
-//Required max 10
+		//The tracking number ID submitted through the request
 
-//The tracking number ID submitted through the request
+		//For example: EA123456795US
 
-//For example: EA123456795US
+		//12887393000019
 
-//12887393000019
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / AdditionalInfo
 
-//TrackResults / TrackInfo / AdditionalInfo
+		//Optional
 
-//Optional
+		//Additional package information
 
-//Additional package information
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / ADPScripting
 
-//TrackResults / TrackInfo / ADPScripting
+		//Optional
 
-//Optional
+		//Additional ADP scripting specific to the ADP Type code
 
-//Additional ADP scripting specific to the ADP Type code
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / ArchiveRestoreInfo
 
-//TrackResults / TrackInfo / ArchiveRestoreInfo
+		//Optional
 
-//Optional
+		//Information regarding availability of Restore service function
 
-//Information regarding availability of Restore service function
+		//For example Yes
 
-//For example Yes
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / AssociatedLabel
 
-//TrackResults / TrackInfo / AssociatedLabel
+		//Optional
 
-//Optional
+		//Additional Label on the mail piece
 
-//Additional Label on the mail piece
+		//For example: EA123456785US
 
-//For example: EA123456785US
+		//This is not currently populated.
 
-//This is not currently populated.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / CarrierRelease
 
-//TrackResults / TrackInfo / CarrierRelease
+		//Optional
 
-//Optional
+		//True/False field indicating the item qualifies for the customer to electronically authorize shipment release.
 
-//True/False field indicating the item qualifies for the customer to electronically authorize shipment release.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / Class
 
-//TrackResults / TrackInfo / Class
+		//Optional
 
-//Optional
+		//Mail Class of the mail piece (human readable).  This will also include the service standard message if it exists. 
 
-//Mail Class of the mail piece (human readable).  This will also include the service standard message if it exists. 
+		//No Default of False.
 
-//No Default of False.
+		//String
 
-//String
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / ClassofMailCode
 
-//TrackResults / TrackInfo / ClassofMailCode
+		//Optional
 
-//Optional
+		//Mail Class of the mail piece (code).  For example:EX, PM, CP, IP
 
-//Mail Class of the mail piece (code).  For example:EX, PM, CP, IP
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / DestinationCity
 
-//TrackResults / TrackInfo / DestinationCity
+		//Optional
 
-//Optional
+		//The destination city.For example: Rochester
 
-//The destination city.For example: Rochester
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / DestinationCountryCode
 
-//TrackResults / TrackInfo / DestinationCountryCode
+		//Optional
 
-//Optional
+		//The destination country code.  For example:MX, CA
 
-//The destination country code.  For example:MX, CA
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / DestinationState
 
-//TrackResults / TrackInfo / DestinationState
+		//Optional
 
-//Optional
+		//The destination State.For example: NY
 
-//The destination State.For example: NY
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / DestinationZip
 
-//TrackResults / TrackInfo / DestinationZip
+		//Optional
 
-//Optional
+		//The destination ZIP code.  For example:20024
 
-//The destination ZIP code.  For example:20024
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / EditedLabelID
 
-//TrackResults / TrackInfo / EditedLabelID
+		//Optional
 
-//Optional
+		//Edited Label ID or Full Label ID.Used only when Source ID is IVR For example:EA123456795US
 
-//Edited Label ID or Full Label ID.Used only when Source ID is IVR For example:EA123456795US
+		//String
 
-//String
+		//Enumerations=
 
-//Enumerations=
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / EmailEnabled
 
-//TrackResults / TrackInfo / EmailEnabled
+		//Optional
 
-//Optional
+		//Signifies if USPS Tracking by Email service is enabled.
 
-//Signifies if USPS Tracking by Email service is enabled.
+		//Boolean
 
-//Boolean
 
 
+		//TrackResults / TrackInfo / EndOfDay
 
-//TrackResults / TrackInfo / EndOfDay
+		//Optional, used only when end of day condition is met
 
-//Optional, used only when end of day condition is met
+		//Populated with the end of day time provided by TRP when TRP API indicates the window is “End of Day” or when the piece is eligible for the PTR default end of day.
 
-//Populated with the end of day time provided by TRP when TRP API indicates the window is “End of Day” or when the piece is eligible for the PTR default end of day.
+		//For example: by 5:00pm
 
-//For example: by 5:00pm
+		//Note: an end of day scenario occurs when the TRP API response indicates a 0 length window.
 
-//Note: an end of day scenario occurs when the TRP API response indicates a 0 length window.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / eSOFEligible
 
-//TrackResults / TrackInfo / eSOFEligible
+		//Optional
 
-//Optional
+		//Signifies if the mailpiece is eSOF eligibile.
 
-//Signifies if the mailpiece is eSOF eligibile.
+		//Boolean
 
-//Boolean
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / ExpectedDeliveryDate
 
-//TrackResults / TrackInfo / ExpectedDeliveryDate
+		//Optional
 
-//Optional
+		//Expected delivery date.For example:December 31, 2013
 
-//Expected delivery date.For example:December 31, 2013
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / ExpectedDeliveryTime
 
-//TrackResults / TrackInfo / ExpectedDeliveryTime
+		//Optional
 
-//Optional
+		//Expected Delivery Time.For example: 3:00 PM
 
-//Expected Delivery Time.For example: 3:00 PM
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / ExpectedDeliveryType
 
-//TrackResults / TrackInfo / ExpectedDeliveryType
+		//Optional
 
-//Optional
+		//Populates “Expected Delivery by” if there is an EDD. For example: Expected Delivery by
 
-//Populates “Expected Delivery by” if there is an EDD. For example: Expected Delivery by
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / GuaranteedDeliveryDate
 
-//TrackResults / TrackInfo / GuaranteedDeliveryDate
+		//Optional
 
-//Optional
+		//Guaranteed Delivery Date – Global Express Mail only: certain countries provide a guarantee delivery.
 
-//Guaranteed Delivery Date – Global Express Mail only: certain countries provide a guarantee delivery.
+		//For example: April 15, 2011 or 3 Business Days
 
-//For example: April 15, 2011 or 3 Business Days
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / GuaranteedDeliveryTime
 
-//TrackResults / TrackInfo / GuaranteedDeliveryTime
+		//Optional
 
-//Optional
+		//Guaranteed Delivery Time provided for Priority Mail Express.For example: 3:00 PM
 
-//Guaranteed Delivery Time provided for Priority Mail Express.For example: 3:00 PM
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / GuaranteedDeliveryType
 
-//TrackResults / TrackInfo / GuaranteedDeliveryType
+		//Optional
 
-//Optional
+		//Populates “Scheduled Delivery by” if there is a GDD. For example: Scheduled Delivery by
 
-//Populates “Scheduled Delivery by” if there is a GDD. For example: Scheduled Delivery by
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / GuaranteedDetails
 
-//TrackResults / TrackInfo / GuaranteedDetails
+		//Optional
 
-//Optional
+		//Special messaging related to the guarantee. For example: “Loss Only Guarantee”
 
-//Special messaging related to the guarantee. For example: “Loss Only Guarantee”
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / ItemShape
 
-//TrackResults / TrackInfo / ItemShape
+		//Optional
 
-//Optional
+		//Indicates the shape of the item.
 
-//Indicates the shape of the item.
+		//String
 
-//String
+		//Enumerations =
 
-//Enumerations =
+		//·         Letter
 
-//·         Letter
+		//·         Flat
 
-//·         Flat
+		//·         Parcel
 
-//·         Parcel
+		//·         Unknown
 
-//·         Unknown
+		//TrackResults / TrackInfo / KahalaIndicator
 
-//TrackResults / TrackInfo / KahalaIndicator
+		//Optional
 
-//Optional
 
 
 
+		//Boolean
 
-//Boolean
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / MailTypeCode
 
-//TrackResults / TrackInfo / MailTypeCode
+		//Optional
 
-//Optional
 
 
 
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo /  MPDATE
 
-//TrackResults / TrackInfo /  MPDATE
+		//Optional
 
-//Optional
+		//Internal date stamp.
 
-//Internal date stamp.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / MPSUFFIX
 
-//TrackResults / TrackInfo / MPSUFFIX
+		//Optional
 
-//Optional
+		//Internal suffix.
 
-//Internal suffix.
+		//2010-03-30 19:30:48.224343
 
-//2010-03-30 19:30:48.224343
+		//Integer
 
-//Integer
 
 
+		//TrackResults / TrackInfo / OnTime
 
-//TrackResults / TrackInfo / OnTime
+		//Optional
 
-//Optional
+		//Field indicating if the item will be delivered on time as specified in the Expected or Guaranteed delivery date.
 
-//Field indicating if the item will be delivered on time as specified in the Expected or Guaranteed delivery date.
+		//String
 
-//String
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo /  OriginCity
 
-//TrackResults / TrackInfo /  OriginCity
+		//Optional
 
-//Optional
+		//The origin city.
 
-//The origin city.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / OriginCountryCode
 
-//TrackResults / TrackInfo / OriginCountryCode
+		//Optional
 
-//Optional
+		//The origin country code.
 
-//The origin country code.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / OriginState
 
-//TrackResults / TrackInfo / OriginState
+		//Optional
 
-//Optional
+		//The origin state.
 
-//The origin state.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo /  OriginZip
 
-//TrackResults / TrackInfo /  OriginZip
+		//Optional
 
-//Optional
+		//The origin ZIP code.
 
-//The origin ZIP code.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / PodEnabled
 
-//TrackResults / TrackInfo / PodEnabled
+		//Optional
 
-//Optional
+		//Signifies if Proof of Delivery service is enabled.
 
-//Signifies if Proof of Delivery service is enabled.
+		//Boolean
 
-//Boolean
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / PredictedDeliveryDate
 
-//TrackResults / TrackInfo / PredictedDeliveryDate
+		//Optional
 
-//Optional
+		//Predicted delivery date.December 30, 2013
 
-//Predicted delivery date.December 30, 2013
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / PredictedDeliveryTime
 
-//TrackResults / TrackInfo / PredictedDeliveryTime
+		//Optional
 
-//Optional
+		//Predicted Delivery Time 3:00 PM or blank.
 
-//Predicted Delivery Time 3:00 PM or blank.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / PredictedDeliveryType
 
-//TrackResults / TrackInfo / PredictedDeliveryType
+		//Optional
 
-//Optional
+		//Populates “Expected Delivery ‘by or on’”, if the source of the PDD is TRP API.
 
-//Populates “Expected Delivery ‘by or on’”, if the source of the PDD is TRP API.
+		//Populates “Expected Delivery on” if the source of the PDD is a PTR calculated date.
 
-//Populates “Expected Delivery on” if the source of the PDD is a PTR calculated date.
+		//For example: Expected Delivery by or Expected Delivery on
 
-//For example: Expected Delivery by or Expected Delivery on
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfoPredictedDeliverySource
 
-//TrackResults / TrackInfoPredictedDeliverySource
+		//Optional
 
-//Optional
+		//States which system provided the Predicted Delivery prediction.
 
-//States which system provided the Predicted Delivery prediction.
+		//TRP, AA
 
-//TRP, AA
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / PDWStart
 
-//TrackResults / TrackInfo / PDWStart
+		//Optional
 
-//Optional
+		//Predicted Delivery Window start time in am/pm format.
 
-//Predicted Delivery Window start time in am/pm format.
+		//In an EndOfDay scenario, the PDWStart tag is null.
 
-//In an EndOfDay scenario, the PDWStart tag is null.
+		//11:00am
 
-//11:00am
+		//For example: (null)
 
-//For example: (null)
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / PDWEnd
 
-//TrackResults / TrackInfo / PDWEnd
+		//Optional
 
-//Optional
+		//Predicted Delivery Window end time in am/pm format.
 
-//Predicted Delivery Window end time in am/pm format.
+		//In an EndOfDay scenario, the PDWEnd tag is null.
 
-//In an EndOfDay scenario, the PDWEnd tag is null.
+		//1:00pm
 
-//1:00pm
+		//For example: (null)
 
-//For example: (null)
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / PurgeByDate
 
-//TrackResults / TrackInfo / PurgeByDate
+		//Optional
 
-//Optional
+		//Contains the Purge By Date of the mail piece.
 
-//Contains the Purge By Date of the mail piece.
+		//Example: December 31, 2024
 
-//Example: December 31, 2024
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / RelatedRRID
 
-//TrackResults / TrackInfo / RelatedRRID
+		//Optional
 
-//Optional
+		//The related label ID between a tracking barcode, the core product, and a PS3811, Green Card Return Reciept.This field can contain either the core product label ID or the Green Card label ID.There is only a one to one relationship.
 
-//The related label ID between a tracking barcode, the core product, and a PS3811, Green Card Return Reciept.This field can contain either the core product label ID or the Green Card label ID.There is only a one to one relationship.
 
+		//Core Product  ID: EA123456795US
 
-//Core Product  ID: EA123456795US
+		//Or Green Card ID;
 
-//Or Green Card ID;
+		//9590940112345671234567
 
-//9590940112345671234567
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / RedeliveryEnabled
 
-//TrackResults / TrackInfo / RedeliveryEnabled
+		//Optional
 
-//Optional
+		//Field indicating if the item qualifies for redelivery.
 
-//Field indicating if the item qualifies for redelivery.
+		//String
 
-//String
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / RestoreEnabled
 
-//TrackResults / TrackInfo / RestoreEnabled
+		//Optional
 
-//Optional
+		//Signifies if Restore tracking information service is enabled
 
-//Signifies if Restore tracking information service is enabled
+		//Values:
 
-//Values:
+		//Boolean
 
-//Boolean
+		//Enumerations =
 
-//Enumerations =
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / ReturnDateNotice
 
-//TrackResults / TrackInfo / ReturnDateNotice
+		//Optional
 
-//Optional
+		//Field indicating the date the item will be Returned to Sender.
 
-//Field indicating the date the item will be Returned to Sender.
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / PodEnabled
 
-//TrackResults / TrackInfo / PodEnabled
+		//Optional
 
-//Optional
+		//Signifies if Proof of Delivery service is enabled
 
-//Signifies if Proof of Delivery service is enabled
+		//Boolean
 
-//Boolean
+		//Enumerations=
 
-//Enumerations=
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / TpodEnabled
 
-//TrackResults / TrackInfo / TpodEnabled
+		//Optional
 
-//Optional
+		//Signifies if Tracking Proof of Delivery service is enabled
 
-//Signifies if Tracking Proof of Delivery service is enabled
+		//Boolean
 
-//Boolean
+		//Enumerations=
 
-//Enumerations=
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / RRAMenabled
 
-//TrackResults / TrackInfo / RRAMenabled
+		//Optional
 
-//Optional
+		//Signifies if RRAM service is enabled
 
-//Signifies if RRAM service is enabled
+		//Boolean
 
-//Boolean
+		//Enumerations=
 
-//Enumerations=
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / RreEnabled
 
-//TrackResults / TrackInfo / RreEnabled
+		//Optional
 
-//Optional
+		//Signifies if Return Receipt Electronic service is enabled
 
-//Signifies if Return Receipt Electronic service is enabled
+		//Boolean
 
-//Boolean
+		//Enumerations=
 
-//Enumerations=
+		//·         True
 
-//·         True
+		//·         False
 
-//·         False
+		//TrackResults / TrackInfo / Service
 
-//TrackResults / TrackInfo / Service
+		//Optional
+		//unbounded
 
-//Optional
-//unbounded
+		//Additional services purchased
 
-//Additional services purchased
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / ServiceTypeCode
 
-//TrackResults / TrackInfo / ServiceTypeCode
+		//Optional
+		//max 1
 
-//Optional
-//max 1
+		//Service Type Code of the mail piece
 
-//Service Type Code of the mail piece
+		//M, AD, VI, 03, 70, 716
 
-//M, AD, VI, 03, 70, 716
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / Status
 
-//TrackResults / TrackInfo / Status
+		//Optional
 
-//Optional
+		//For example: Delivered
 
-//For example: Delivered
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / StatusCategory
 
-//TrackResults / TrackInfo / StatusCategory
+		//Optional
 
-//Optional
+		//For example: In Transit
 
-//For example: In Transit
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / StatusSummary
 
-//TrackResults / TrackInfo / StatusSummary
+		//Optional
 
-//Optional
+		//Status summary
 
-//Status summary
+		//For example: Your item was delivered at 12:55 pm on April 05, 2010 in FALMOUTH, MA 02540
 
-//For example: Your item was delivered at 12:55 pm on April 05, 2010 in FALMOUTH, MA 02540
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TABLECODE
 
-//TrackResults / TrackInfo / TABLECODE
+		//Optional
 
-//Optional
+		//Internal description of mail piece as it relates to PTR(live, history, or archived piece) T, H, A(CMC830 V3 – T is the only value defined)
 
-//Internal description of mail piece as it relates to PTR(live, history, or archived piece) T, H, A(CMC830 V3 – T is the only value defined)
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / ValueofArticle<placeholder>
 
-//TrackResults / TrackInfo / ValueofArticle<placeholder>
+		//Optional
 
-//Optional
+		//Value of Article for when the Source ID is PIN
 
-//Value of Article for when the Source ID is PIN
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary
 
-//TrackResults / TrackInfo / TrackSummary
+		//Optional
+		//max 1
 
-//Optional
-//max 1
+		//Tracking Summary Information.
 
-//Tracking Summary Information.
+		//(Group)
 
-//(Group)
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventTime
 
-//TrackResults / TrackInfo / TrackSummary / EventTime
+		//Optional
 
-//Optional
+		//The time of the event.
 
-//The time of the event.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventDate
 
-//TrackResults / TrackInfo / TrackSummary / EventDate
+		//Optional
 
-//Optional
+		//The date of the event.
 
-//The date of the event.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / TrackSummary / Event
 
-//TrackResults / TrackInfo / TrackSummary / Event
+		//Optional
 
-//Optional
+		//The event type
 
-//The event type
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventCity
 
-//TrackResults / TrackInfo / TrackSummary / EventCity
+		//Optional
 
-//Optional
+		//The city where the event occurred.
 
-//The city where the event occurred.
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventState
 
-//TrackResults / TrackInfo / TrackSummary / EventState
+		//Optional
 
-//Optional
+		//The state where the event occurred.
 
-//The state where the event occurred.
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventZIPCode
 
-//TrackResults / TrackInfo / TrackSummary / EventZIPCode
+		//Optional
 
-//Optional
+		//The ZIP Code of the event.
 
-//The ZIP Code of the event.
+		//String
 
-//String
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventCountry
 
-//TrackResults / TrackInfo / TrackSummary / EventCountry
+		//Optional
 
-//Optional
+		//The country where the event occurred.
 
-//The country where the event occurred.
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / FirmName
 
-//TrackResults / TrackInfo / TrackSummary / FirmName
+		//Optional
 
-//Optional
+		//The company name if delivered to a company.
 
-//The company name if delivered to a company.
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / Name
 
-//TrackResults / TrackInfo / TrackSummary / Name
+		//Optional
 
-//Optional
+		//The first initial and last name of the person signing for delivery (if available).
 
-//The first initial and last name of the person signing for delivery (if available).
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / EventCode
 
-//TrackResults / TrackInfo / TrackSummary / EventCode
+		//Optional
 
-//Optional
 
 
 
+		//String
 
-//String
 
 
 
+		//TrackResults / TrackInfo / TrackSummary / ActionCode
 
-//TrackResults / TrackInfo / TrackSummary / ActionCode
+		//Optional
+		//max 1
 
-//Optional
-//max 1
 
- 
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackSummary / ReasonCode
+		//TrackResults / TrackInfo / TrackSummary / ReasonCode
 
-//Optional
+		//Optional
 
 
 
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackSummary / GeoCertified
+		//TrackResults / TrackInfo / TrackSummary / GeoCertified
 
-//Optional
+		//Optional
 
-//Only eligible to display with delivery(01) events.
+		//Only eligible to display with delivery(01) events.
 
-//Boolean
+		//Boolean
 
-//Enumerations =
+		//Enumerations =
 
-//·         True
+		//·         True
 
-//·         False
+		//·         False
 
-//TrackResults / TrackInfo / TrackDetail
+		//TrackResults / TrackInfo / TrackDetail
 
-//Optional
-//max 99
+		//Optional
+		//max 99
 
-//Tracking Detail Information.This group is repeatable.
+		//Tracking Detail Information.This group is repeatable.
 
-//(Group)
+		//(Group)
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / DeliveryAttributeCode
+		//TrackResults / TrackInfo / TrackDetail / DeliveryAttributeCode
 
-//Optional
+		//Optional
 
-//Used to provide additional information regarding an event posted to a mail piece.
+		//Used to provide additional information regarding an event posted to a mail piece.
 
-//String
+		//String
 
-//Enumerations =
+		//Enumerations =
 
-//·         32
+		//·         32
 
-//TrackResults / TrackInfo / TrackDetail / EventTime
+		//TrackResults / TrackInfo / TrackDetail / EventTime
 
-//Optional
+		//Optional
 
-//The time of the event.
+		//The time of the event.
 
-//String
+		//String
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventDate
+		//TrackResults / TrackInfo / TrackDetail / EventDate
 
-//Optional
+		//Optional
 
-//The date of the event.
+		//The date of the event.
 
-//String
+		//String
 
 
 
-//TrackResults / TrackInfo / TrackDetail / Event
+		//TrackResults / TrackInfo / TrackDetail / Event
 
-//Optional
+		//Optional
 
-//The event type.
+		//The event type.
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventCity
+		//TrackResults / TrackInfo / TrackDetail / EventCity
 
-//Optional
+		//Optional
 
-//The city where the event occurred.
+		//The city where the event occurred.
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventState
+		//TrackResults / TrackInfo / TrackDetail / EventState
 
-//Optional
+		//Optional
 
-//The state where the event occurred.
+		//The state where the event occurred.
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventStatusCategory
+		//TrackResults / TrackInfo / TrackDetail / EventStatusCategory
 
-//Optional
+		//Optional
 
-//The status of a posted event on a mail piece.
+		//The status of a posted event on a mail piece.
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventPartner
+		//TrackResults / TrackInfo / TrackDetail / EventPartner
 
-//Optional
+		//Optional
 
-//Stores the name of the shipping partner associated to a posted shipping partner event (80,81,82).
+		//Stores the name of the shipping partner associated to a posted shipping partner event (80,81,82).
 
-//String
+		//String
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventZIPCode
+		//TrackResults / TrackInfo / TrackDetail / EventZIPCode
 
-//Optional
+		//Optional
 
-//The ZIP Code of the event.
+		//The ZIP Code of the event.
 
-//String
+		//String
 
 
 
-//TrackResults / TrackInfo / TrackDetail / EventCountry
+		//TrackResults / TrackInfo / TrackDetail / EventCountry
 
-//Optional
+		//Optional
 
-//The country where the event occurred.
+		//The country where the event occurred.
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / FirmName
+		//TrackResults / TrackInfo / TrackDetail / FirmName
 
-//Optional
+		//Optional
 
-//The company name if delivered to a company.
+		//The company name if delivered to a company.
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackDetail / Name
+		//TrackResults / TrackDetail / Name
 
-//Optional
+		//Optional
 
-//The name of the persons signing for delivery (if available).
+		//The name of the persons signing for delivery (if available).
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / AuthorizedAgent
+		//TrackResults / TrackInfo / TrackDetail / AuthorizedAgent
 
-//Optional
+		//Optional
 
-//True/False field indicating the person signing as an Authorized Agent.
+		//True/False field indicating the person signing as an Authorized Agent.
 
-//Boolean
+		//Boolean
 
-//Enumerations =
+		//Enumerations =
 
-//·         True
+		//·         True
 
-//·         False
+		//·         False
 
-//TrackResults / TrackInfo / TrackDetail / EventCode
+		//TrackResults / TrackInfo / TrackDetail / EventCode
 
-//Optional
+		//Optional
 
 
 
 
-//String
+		//String
 
 
 
 
-//TrackResults / TrackInfo / TrackDetail / ActionCode
+		//TrackResults / TrackInfo / TrackDetail / ActionCode
 
-//Optional
-//max 1
+		//Optional
+		//max 1
 
- 
 
-//String
 
+		//String
 
 
 
-//TrackResults / TrackInfo / TrackDetail / ReasonCode
 
-//Optional
+		//TrackResults / TrackInfo / TrackDetail / ReasonCode
 
+		//Optional
 
 
 
-//String
 
+		//String
 
 
 
-//TrackResults / TrackInfo / TrackDetail / GeoCertified
 
-//Optional
+		//TrackResults / TrackInfo / TrackDetail / GeoCertified
 
-//Only eligible to display with delivery(01) events.
+		//Optional
 
-//Boolean
+		//Only eligible to display with delivery(01) events.
 
-//Enumerations =
+		//Boolean
 
-//·         True
+		//Enumerations =
 
-//·         False
+		//·         True
 
-//TrackResults / TrackInfo / Error
+		//·         False
 
-//Optional
+		//TrackResults / TrackInfo / Error
 
+		//Optional
 
 
-//(Group)
 
+		//(Group)
 
 
 
-//TrackResults / TrackInfo / Error / ErrorDescription
 
-//Optional
+		//TrackResults / TrackInfo / Error / ErrorDescription
 
-//Descriptions of error message.
+		//Optional
 
-//Duplicate or 4 items were also tied to your 3849 ID but exceeded the maximum number of tracking number inquiries supported on this site.
+		//Descriptions of error message.
 
-//This 3849 ID was used on a large volume shipment and cannot be used for tracking on this site.
+		//Duplicate or 4 items were also tied to your 3849 ID but exceeded the maximum number of tracking number inquiries supported on this site.
 
-//String
+		//This 3849 ID was used on a large volume shipment and cannot be used for tracking on this site.
 
+		//String
 
 
-//TrackResponse
 
-//Required
+		//TrackResponse
 
+		//Required
 
 
 
-//(Alias)
 
- }
+		//(Alias)
+
+	}
 }
