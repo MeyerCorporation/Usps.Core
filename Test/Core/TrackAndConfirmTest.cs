@@ -171,7 +171,7 @@ namespace Meyer.UspsCore.Test.Core
 			var list = results.ToList();
 
 			Assert.Equal(4, results.Count());
-			Assert.Equal(2, results.Select(r => r.Error).Where(r => r != null).Count());
+			Assert.Equal(3, results.Select(r => r.Error).Where(r => r != null).Count());
 			Assert.Equal("A status update is not yet available on your Priority Mail<SUP>&reg;</SUP> package. It will be available when the shipper provides an update or the package is delivered to USPS. Check back soon. Sign up for Informed Delivery<SUP>&reg;</SUP> to receive notifications for packages addressed to you.", list[1].Error.Description);
 			//Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", list[0].TrackSummary);
 			//Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", list[0].TrackDetails.First());

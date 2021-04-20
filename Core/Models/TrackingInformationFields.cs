@@ -11,33 +11,39 @@ namespace MeyerCorp.Usps.Core.Models
 
 		internal static TrackingInformationFields Parse(XElement input)
 		{
-			return new TrackingInformationFields
+			try
 			{
-				Class = input.Element("Class")?.Value,
-				ClassOfMailCode = input.Element("ClassOfMailCode")?.Value,
-				DestinationCity = input.Element("DestinationCity")?.Value,
-				DestinationState = input.Element("DestinationState")?.Value,
-				DestinationZip = input.Element("DestinationZip")?.Value,
-				EmailEnabled = Boolean.Parse(input.Element("EmailEnabled").Value),
-				KahalaIndicator = Boolean.Parse(input.Element("KahalaIndicator").Value),
-				MailTypeCode = input.Element("MailTypeCode")?.Value,
-				MPDATE = DateTime.Parse(input.Element("MPDATE").Value),
-				MPSUFFIX = input.Attribute("MPSUFFIX")?.Value,
-				OriginCity = input.Attribute("OriginCity")?.Value,
-				OriginZip = input.Attribute("OriginZip")?.Value,
-				PodEnabled = ToBool(input.Attribute("PodEnabled")?.Value).Value,
-				TPodEnabled = ToBool(input.Element("TPodEnabled")?.Value).Value,
-				RestoreEnabled = ToBool(input.Element("RestoreEnabled")?.Value).Value,
-				RramEnabled = ToBool(input.Element("RramEnabled")?.Value).Value,
-				RreEnabled = input.Element("RreEnabled")?.Value,
-				Services = input.Elements("Service").Select(e => e?.Value),
-				ServiceTypeCode = input.Element("ServiceTypeCode")?.Value,
-				Status = input.Element("Status")?.Value,
-				StatusCategory = input.Element("StatusCategory")?.Value,
-				StatusSummary = input.Element("StatusSummary")?.Value,
-				TABLECODE = input.Element("TABLECODE")?.Value,
-				TrackSummary = TrackSummary.Parse(input.Element("TrackSummary")),
-			};
+				return new TrackingInformationFields
+				{
+					Class = input.Element("Class")?.Value,
+					ClassOfMailCode = input.Element("ClassOfMailCode")?.Value,
+					DestinationCity = input.Element("DestinationCity")?.Value,
+					DestinationState = input.Element("DestinationState")?.Value,
+					DestinationZip = input.Element("DestinationZip")?.Value,
+					EmailEnabled = ToBool(input.Element("EmailEnabled")),
+					KahalaIndicator = ToBool(input.Element("KahalaIndicator")),
+					MailTypeCode = input.Element("MailTypeCode")?.Value,
+					MPDATE = ToDateTime(input.Element("MPDATE")),
+					MPSUFFIX = input.Element("MPSUFFIX")?.Value,
+					OriginCity = input.Element("OriginCity")?.Value,
+					OriginZip = input.Element("OriginZip")?.Value,
+					PodEnabled = ToBool(input.Element("PodEnabled")),
+					TPodEnabled = ToBool(input.Element("TPodEnabled")),
+					RestoreEnabled = ToBool(input.Element("RestoreEnabled")),
+					RramEnabled = ToBool(input.Element("RramEnabled")),
+					RreEnabled = input.Element("RreEnabled")?.Value,
+					Services = input.Elements("Service").Select(e => e?.Value),
+					ServiceTypeCode = input.Element("ServiceTypeCode")?.Value,
+					Status = input.Element("Status")?.Value,
+					StatusCategory = input.Element("StatusCategory")?.Value,
+					StatusSummary = input.Element("StatusSummary")?.Value,
+					TABLECODE = input.Element("TABLECODE")?.Value,
+					Error = Error.Parse(input.Element("Error")),
+					TrackSummary = TrackSummary.Parse(input.Element("TrackSummary")),
+					TrackDetails = input.Elements("TrackDetail").Select(td => TrackDetail.Parse(td)),
+				};
+			}
+			catch (Exception ex) { throw; }
 		}
 
 		public string Class { get; set; }
@@ -45,18 +51,18 @@ namespace MeyerCorp.Usps.Core.Models
 		public string DestinationCity { get; set; }
 		public string DestinationState { get; set; }
 		public string DestinationZip { get; set; }
-		public bool EmailEnabled { get; set; }
-		public bool KahalaIndicator { get; set; }
+		public bool? EmailEnabled { get; set; }
+		public bool? KahalaIndicator { get; set; }
 		public string MailTypeCode { get; set; }
-		public DateTime MPDATE { get; set; }
+		public DateTime? MPDATE { get; set; }
 		public string MPSUFFIX { get; set; }
 		public string OriginCity { get; set; }
 		public string OriginState { get; set; }
 		public string OriginZip { get; set; }
-		public bool PodEnabled { get; set; }
-		public bool TPodEnabled { get; set; }
-		public bool RestoreEnabled { get; set; }
-		public bool RramEnabled { get; set; }
+		public bool? PodEnabled { get; set; }
+		public bool? TPodEnabled { get; set; }
+		public bool? RestoreEnabled { get; set; }
+		public bool? RramEnabled { get; set; }
 		public string RreEnabled { get; set; }
 		public IEnumerable<string> Services { get; set; }
 		public string ServiceTypeCode { get; set; }
@@ -69,7 +75,7 @@ namespace MeyerCorp.Usps.Core.Models
 		/// <summary>
 		/// Tracking Details Information.
 		/// </summary>
-		public IENumerable<TrackDetail> TrackDetails { get; set; }
+		public IEnumerable<TrackDetail> TrackDetails { get; set; }
 
 		/// <summary>
 		/// Guaranteed Delivery Date
