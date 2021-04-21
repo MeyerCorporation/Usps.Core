@@ -6,8 +6,6 @@ namespace MeyerCorp.Usps.Core.Models
 	{
 		public string Id { get; set; }
 
-		public Error Error { get; set; }
-
 		protected static bool? ToBool(string value)
 		{
 			if (string.IsNullOrWhiteSpace(value))

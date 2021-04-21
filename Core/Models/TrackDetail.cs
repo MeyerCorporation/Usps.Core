@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Linq;
 using System.Xml.Linq;
 
 namespace MeyerCorp.Usps.Core.Models
 {
 	public class TrackDetail
 	{
-		public DateTime EventDateTime { get; set; }
+		public string EventTime { get; set; }
+		public string EventDate { get; set; }
 		public string Event { get; set; }
 		public string EventCity { get; set; }
 		public string EventState { get; set; }
@@ -14,31 +14,28 @@ namespace MeyerCorp.Usps.Core.Models
 		public string EventCountry { get; set; }
 		public string FirmName { get; set; }
 		public string Name { get; set; }
-		public string AuthorizedAgent { get; set; }
+		public bool AuthorizedAgent { get; set; }
 		public string EventCode { get; set; }
 		public string ActionCode { get; set; }
 		public string ReasonCode { get; set; }
 
-		public static TrackDetail[] Parse(string input)
+		public static TrackDetail Parse(XElement input)
 		{
-			var parsed = XElement.Parse(input).Elements("TrackDetail");
-
-			return parsed
-				.Select(p => new TrackDetail
-				{
-					EventDateTime = DateTime.Parse(String.Concat(p.Element("EventDate")?.Value, " ", p.Element("EventTime")?.Value)),
-					Event = p.Element("Event")?.Value,
-					EventCity = p.Element("EventCity")?.Value,
-					EventState = p.Element("EventState")?.Value,
-					EventZIPCode = p.Element("EventZIPCode")?.Value,
-					FirmName = p.Element("FirmName")?.Value,
-					Name = p.Element("Name")?.Value,
-					AuthorizedAgent = p.Element("AuthorizedAgent")?.Value,
-					EventCode = p.Attribute("EventCode")?.Value,
-					ActionCode = p.Attribute("ActionCode")?.Value,
-					ReasonCode = p.Attribute("ReasonCode")?.Value,
-				})
-				.ToArray();
+			return new TrackDetail
+			{
+				EventDate = input.Element("EventDate")?.Value,
+				EventTime = input.Element("EventTime")?.Value,
+				Event = input.Element("Event")?.Value,
+				EventCity = input.Element("EventCity")?.Value,
+				EventState = input.Element("EventState")?.Value,
+				EventZIPCode = input.Element("EventZIPCode")?.Value,
+				FirmName = input.Element("FirmName")?.Value,
+				Name = input.Element("Name")?.Value,
+				AuthorizedAgent = Boolean.Parse(input.Element("AuthorizedAgent").Value),
+				EventCode = input.Attribute("EventCode")?.Value,
+				ActionCode = input.Attribute("ActionCode")?.Value,
+				ReasonCode = input.Attribute("ReasonCode")?.Value,
+			};
 		}
 	}
 }

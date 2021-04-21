@@ -14,6 +14,7 @@ namespace MeyerCorp.Usps.Core.Models
 	{
 		public string TrackSummary { get; set; }
 		public IEnumerable<string> TrackDetails { get; set; }
+		public Error Error { get; set; }
 
 		internal static TrackingInformation Parse(XElement element)
 		{

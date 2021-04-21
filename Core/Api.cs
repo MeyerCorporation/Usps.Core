@@ -24,7 +24,7 @@ namespace MeyerCorp.Usps.Core
 		protected HttpRequestMessage Request { get; set; } = new HttpRequestMessage();
 		private bool disposedValue;
 
-		protected async Task<string> GetResponseStringAsync()
+		protected async Task<XDocument> GetResponseStringAsync()
 		{
 			try
 			{
@@ -33,15 +33,16 @@ namespace MeyerCorp.Usps.Core
 
 				if (response.StatusCode == HttpStatusCode.OK)
 				{
-					if (CheckError(responseString))
+					var xml = XDocument.Parse(responseString);
+
+					if (xml.Root.Name == "Error")
 					{
-						var message = GetError(responseString).Trim();
-						throw new InvalidOperationException(message);
+						var ex = new InvalidOperationException("The USPS API returned an error.");
+						ex.Data.Add("Error", xml);
+						throw ex;
 					}
 					else
-					{
-						return responseString;
-					}
+						return xml;
 				}
 				else
 					throw new InvalidOperationException(responseString);
@@ -68,16 +69,6 @@ namespace MeyerCorp.Usps.Core
 				.Parse(responseString)
 				.DescendantsAndSelf("Error")
 				.Any();
-		}
-
-		protected static string GetError(string responseString)
-		{
-			return XElement
-				.Parse(responseString)
-				.DescendantsAndSelf("Error")
-				.First()
-				.Element("Description")
-				.Value;
 		}
 
 		protected virtual void Dispose(bool disposing)
