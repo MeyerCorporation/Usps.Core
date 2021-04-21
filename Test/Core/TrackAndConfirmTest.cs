@@ -7,213 +7,87 @@ using UspsXml = MeyerCorp.Usps.Core.Xml;
 
 namespace Meyer.UspsCore.Test.Core
 {
-    public class TrackAndConfirmTest : Test
-    {
-        [Fact(DisplayName = "Track No Packages")]
-        public async Task Test1Async()
-        {
-            var tracking = new TrackAndConfirm(ApiOptions);
+	public class TrackAndConfirmTest : Test
+	{
+		[Fact(DisplayName = "Track No Packages")]
+		public async Task Test1Async()
+		{
+			var tracking = new TrackAndConfirm(ApiOptions);
 
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
-            {
-                new UspsXml.TrackID
-                {
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
+			{
+				new UspsXml.TrackID
+				{
 					Id = 0,
 					TrackId = null,
-                }
-            }));
+				}
+			}));
 
-            Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", ex.Message);
-        }
+			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", ex.Message);
+		}
 
-        [Fact(DisplayName = "Track Bad Packages ID")]
-        public async Task Test2Async()
-        {
-            var tracking = new TrackAndConfirm(ApiOptions);
+		[Fact(DisplayName = "Track Bad Packages ID")]
+		public async Task Test2Async()
+		{
+			var tracking = new TrackAndConfirm(ApiOptions);
 
-            var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
-            {
-                new UspsXml.TrackID
-                {
+			var ex = await Assert.ThrowsAsync<InvalidOperationException>(() => tracking.TrackAsync(new UspsXml.TrackID[]
+			{
+				new UspsXml.TrackID
+				{
 					TrackId = "9405 5036 9930 0333 4765 26",
-                }
-            }));
-
-            Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The empty string &#39;&#39; is not a valid name.", ex.Message);
-        }
-
-        [Fact(DisplayName = "Single Address")]
-        public async Task Test3Async()
-        {
-            var addresses = new Addresses(ApiOptions);
-
-            var results = await addresses.ValidateAsync(1, new UspsXml.Address[]
-            {
-                new UspsXml.Address
-                {
-                    Address1 = "2001 Meyer Way",
-					//Address2 = "address2",
-					City = "Fairfield",
-					//FirmName = "firmname",
-					Id = 0,
-                    State = "CA",
-					//Urbanization = "urbanization",
-					//Zip4 = "9999",
-					//Zip5 = "95687",
 				}
-            });
+			}));
 
-            var result = results.First();
+			Assert.Equal("The &#39;ID&#39; attribute is invalid - The value &#39;9405 5036 9930 0333 4765 26&#39; is invalid according to its datatype &#39;http://www.w3.org/2001/XMLSchema:NMTOKEN&#39; - The &#39; &#39; character, hexadecimal value 0x20, cannot be included in a name.", ex.Message);
+		}
 
-            Assert.Equal("0", result.Id);
-            Assert.Null(result.Address1);
-            Assert.Equal("2001 MEYER WAY", result.Address2);
-            Assert.True(result.Business);
-            Assert.Equal("C037", result.CarrierRoute);
-            Assert.False(result.CentralDeliveryPoint);
-            Assert.Equal("FAIRFIELD", result.City);
-            Assert.Null(result.CityAbbreviation);
-            Assert.Equal("01", result.DeliveryPoint);
-            Assert.False(result.DPVCMRA);
-            //Assert.True(result.DPVConfirmation);
-            Assert.Equal("AABB", result.DPVFootnotes.Raw);
-            Assert.Null(result.Error);
-            Assert.Null(result.FirmName);
-            Assert.Equal("(N/A)", result.Footnotes.ToString());
-            Assert.Equal("CA", result.State);
-            Assert.Null(result.Urbanization);
-            Assert.False(result.Vacant);
-            Assert.Equal("6802", result.Zip4);
-            Assert.Equal("94533", result.Zip5);
-        }
+		[Fact(DisplayName = "Track Single ID")]
+		public async Task Test3Async()
+		{
+			var tracking = new TrackAndConfirm(ApiOptions);
 
-        [Fact(DisplayName = "Double Address")]
-        public async Task Test4Async()
-        {
-            var addresses = new Addresses(ApiOptions);
+			var results = await tracking.TrackAsync(new UspsXml.TrackID[]
+			{
+				new UspsXml.TrackID
+				{
+					TrackId = "9405503699300333476526",
+				}
+			});
 
-            var results = await addresses.ValidateAsync(1, new UspsXml.Address[]
-            {
-                new UspsXml.Address
-                {
-                    Address1 = "2001 Meyer Way",
-					//Address2 = "address2",
-					City = "Fairfield",
-					//FirmName = "firmname",
-					Id = 0,
-                    State = "CA",
-					//Urbanization = "urbanization",
-					//Zip4 = "9999",
-					//Zip5 = "95687",
+			Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", results.First().TrackSummary);
+			Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", results.First().TrackDetails.First());
+		}
+
+
+		[Fact(DisplayName = "Track double ID")]
+		public async Task Test4Async()
+		{
+			var tracking = new TrackAndConfirm(ApiOptions);
+
+			var results = await tracking.TrackAsync(new UspsXml.TrackID[]
+			{
+				new UspsXml.TrackID
+				{
+					TrackId = "9405503699300333476526",
 				},
-                new UspsXml.Address
-                {
-                    Address1 = "1 Meyer Plaza",
-					//Address2 = "address2",
-					City = "Vallejo",
-					//FirmName = "firmname",
-					Id = 0,
-                    State = "CA",
-					//Urbanization = "urbanization",
-					//Zip4 = "9999",
-					//Zip5 = "95687",
-				}
-
-            });
-
-            var result = results.First();
-
-            Assert.Equal("0", result.Id);
-            Assert.Null(result.Address1);
-            Assert.Equal("2001 MEYER WAY", result.Address2);
-            Assert.True(result.Business);
-            Assert.Equal("C037", result.CarrierRoute);
-            Assert.False(result.CentralDeliveryPoint);
-            Assert.Equal("FAIRFIELD", result.City);
-            Assert.Null(result.CityAbbreviation);
-            Assert.Equal("01", result.DeliveryPoint);
-            Assert.False(result.DPVCMRA);
-            Assert.Equal("Y - Address was DPV confirmed for both primary and (if present) secondary numbers.", result.DPVConfirmation.ToString());
-            Assert.Equal("AABB", result.DPVFootnotes.Raw);
-            Assert.Null(result.Error);
-            Assert.Null(result.FirmName);
-            Assert.Equal("(N/A)", result.Footnotes.ToString());
-            Assert.Equal("CA", result.State);
-            Assert.Null(result.Urbanization);
-            Assert.False(result.Vacant);
-            Assert.Equal("6802", result.Zip4);
-            Assert.Equal("94533", result.Zip5);
-        }
-
-        [Fact(DisplayName = "Double City State Lookup")]
-        public async Task Test5Async()
-        {
-            var addresses = new Addresses(ApiOptions);
-
-            var results = await addresses.LookupCityStateAsync(
-                new UspsXml.CityState
-                {
-                    Zip5 = "95687",
-                    Id = 1,
-                },
-                new UspsXml.CityState
-                {
-                    Zip5 = "95127",
-                    Id = 1,
-                });
-
-            Assert.Equal(2, results.Count());
-            Assert.Equal("VACAVILLE", results.First().City);
-            Assert.Equal("CA", results.First().State);
-            Assert.Equal("SAN JOSE", results.Last().City);
-            Assert.Equal("CA", results.Last().State);
-        }
-
-        [Fact(DisplayName = "Double Zip Code Lookup")]
-        public async Task Test6Async()
-        {
-            var addresses = new Addresses(ApiOptions);
-
-            var results = await addresses.LookupZipCodeAsync(new UspsXml.ZipCode[]
-            {
-                new UspsXml.ZipCode
-                {
-                    Address1 = "2001 Meyer Way",
-					//Address2 = "address2",
-					City = "Fairfield",
-					//FirmName = "firmname",
-					Id = 0,
-                    State = "CA",
-					//Urbanization = "urbanization",
-					//Zip4 = "9999",
-					//Zip5 = "95687",
+				new UspsXml.TrackID
+				{
+					TrackId = "9405503699300050852016",
 				},
-                new UspsXml.ZipCode
-                {
-                    Address1 = "1 Meyer Plaza",
-					//Address2 = "address2",
-					City = "Vallejo",
-					//FirmName = "firmname",
-					Id = 0,
-                    State = "CA",
-					//Urbanization = "urbanization",
-					//Zip4 = "9999",
-					//Zip5 = "95687",
+				new UspsXml.TrackID
+				{
+					TrackId = "9405803699300034770504",
+				},
+				new UspsXml.TrackID
+				{
+					TrackId = "XXXXXXXXXXX2",
 				}
+			});
 
-            });
-
-            var result = results.First();
-
-            Assert.Equal("0", result.Id);
-            Assert.Null(result.Address1);
-            Assert.Equal("2001 MEYER WAY", result.Address2);
-            Assert.Equal("FAIRFIELD", result.City);
-            Assert.Null(result.Error);
-            Assert.Null(result.FirmName);
-            Assert.Equal("CA", result.State);
-            Assert.Equal("6802", result.Zip4);
-            Assert.Equal("94533", result.Zip5);
-        }
-    }
+			Assert.Equal("Your item was delivered to a parcel locker at 10:45 am on April 6, 2021 in ORLANDO, FL 32832.", results.First().TrackSummary);
+			Assert.Equal("Out for Delivery, 04/06/2021, 7:51 am, ORLANDO, FL 32832", results.First().TrackDetails.First());
+			Assert.Equal("The Postal Service could not locate the tracking information for your request. Please verify your tracking number and try again later.", results.Last().TrackSummary);
+		}
+	}
 }

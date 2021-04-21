@@ -28,7 +28,7 @@ namespace MeyerCorp.Usps.Core.Models
 				DPVCMRA = ToBool(element.Element("DPVCMRA")?.Value),
 				DPVConfirmation = new DpvConfirmation { Raw = element.Element("DPVConfirmation")?.Value },
 				DPVFootnotes = new DpvFootnotes { Raw = element.Element("DPVFootnotes")?.Value, },
-				Error = element.Element("Error")?.Value,
+				Error = Error.Parse(element.Element("Error")),
 				FirmName = element.Element("FirmName")?.Value,
 				Footnotes = new AddressValidationFootnotes { Raw = element.Element("Footnotes")?.Value },
 				Id = element.Attribute("ID")?.Value,
