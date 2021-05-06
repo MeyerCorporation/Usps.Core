@@ -61,7 +61,8 @@ Using Usps.Core depends on your needs:
 
 #### Adding functionality and endpoints to an existing .NET Core Web API project:
 
-Merely install the MeyerCorp.Usps.Api NuGet package to add the controllers to your .NET Core Web project. You will then have the functionality available internally to the application as well as exposing it to your API consumers. Keep in mind that consumers will be using your API key. They cannot pass their own at this time.
+Merely install the MeyerCorp.Usps.Api NuGet package to add the controllers to your .NET Core Web project. You will then have the functionality available internally to the application as well as exposing it to your API consumers.
+> Keep in mind that consumers will be using your API key. They cannot pass their own at this time, and there are no plans to add this as a feature.
 
 #### Adding functionality to an existing .NET Core project:
 
@@ -109,6 +110,8 @@ I don't think any of this will have too much affect on anyone as no one really s
 * [USPS Web API](https://www.usps.com/business/web-tools-apis/welcome.htm)
 
 ## Contributing
+
+We are very open to contributions from members of other organizations. Is there some feature or the USPS API that is not implemented here that you need? Let us know and we can set that up or allow you to contribute.
 
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
 
