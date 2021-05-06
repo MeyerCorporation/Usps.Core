@@ -14,7 +14,7 @@ The solution contains five projects:
 
 ### [Core](https://github.com/MeyerCorporation/Usps.Core/tree/dev/Core)
 
-This is a .NET Core library which contains actual translation of the REST inputs to the non-standard input of the USPS API. It also creates a NuGet package which allows the functionality to be included in other web application. This is available as a NuGet package.
+This is a .NET Standard library which contains actual translation of the REST inputs to the non-standard input of the USPS API. It also creates a NuGet package which allows the functionality to be included in other .NET applications.
 
 ### [ExampleConsole](https://github.com/MeyerCorporation/Usps.Core/tree/dev/ExampleConsole)
 
